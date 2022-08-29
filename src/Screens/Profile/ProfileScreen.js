@@ -20,7 +20,7 @@ export const ProfileScreen = () => {
   const {loading, data, error} = useQuery(GET_USER)
   useEffect(()=>{
     AsyncStorage.getItem('token').then(res=> setToken(res))
-  },[])
+  },[data])
   console.log('data',data);
   return (
     <View style={Theme.containers.containerParent}>

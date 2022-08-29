@@ -7,19 +7,19 @@ export const Theme = {
   },
   fonts: {
     titleWhite: {
-      fontSize: 18,
-      fontWeigth: 600,
+      fontSize: 20,
+      fontWeight: "700",
       color: "white",
     },
     titleRed: {
       fontSize: 20,
-      fontWeigth: 600,
+      fontWeight: "600",
       color: "#f50057",
     },
     description: {
       fontSize: 18,
-      fontWeigth: 400,
-      color: "#1b333d",
+      fontWeight: "400",
+      color: "white",
     },
   },
   buttons: {
@@ -33,10 +33,12 @@ export const Theme = {
     },
     secondary: {
       height: 50,
-      marginBottom: 10,
+      marginTop:10,
       borderRadius: 10,
       justifyContent: "center",
       alignItems: "center",
+      width:'100%',
+      backgroundColor: "#1b333d",
     },
   },
   containers: {
