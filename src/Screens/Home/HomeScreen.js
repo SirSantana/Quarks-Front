@@ -1,25 +1,27 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { View, SafeAreaView, Text, Pressable } from "react-native";
+import { View, SafeAreaView, Text, Pressable, Image } from "react-native";
+import useAuth from "../../hooks/useAuth";
 import { Theme } from "../../theme";
 
 export const HomeScreen = () => {
   const [token, setToken] = useState(null)
+  const {user} = useAuth()
+  console.log('user',user);
   const navigation = useNavigation()
-  useEffect(()=>{
-    AsyncStorage.getItem('token').then(res=> setToken(res))
-  },[])
 
   const handleContinue=()=>{
     if(token){
       console.warn('Bien!');
     }else{
-      navigation.navigate('SignIn')
+      navigation.navigate('SignUp')
     }
   }
   return (
     <SafeAreaView style={Theme.containers.containerParent}>
+          <Image style={{width:40, height:40, marginBottom:20}} source={require('../../../assets/LogoQuarks1PNG.png')}/>
+      
       <View
         style={{
           width: "80%",
@@ -43,11 +45,11 @@ export const HomeScreen = () => {
           ¡Te presentamos la manera de llevar los gastos de tu vehiculo!
         </Text>
         <Pressable
-          style={Theme.buttons.secondary}
+          style={Theme.buttons.primary}
           onPress={handleContinue}
         >
-          <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>
-            {token ?  "Continuar" : "Registrate"}
+          <Text style={Theme.fonts.titleWhite}>
+            {user ?  "Continuar" : "Registrate"}
           </Text>
         </Pressable>
       </View>

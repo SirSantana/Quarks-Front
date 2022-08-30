@@ -2,12 +2,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Foundation } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-
+import {CarScreen} from '../Screens/Car/CarScreen'
 import { NavigationContainer } from '@react-navigation/native';
 import SignInScreen from '../Screens/Profile/SiginScreen';
 import { SignUpScreen } from '../Screens/Profile/SignUpScreen';
 import { HomeScreen } from '../Screens/Home/HomeScreen';
 import { ProfileScreen } from '../Screens/Profile/ProfileScreen';
+import FormCreateVehicule from '../Components/CarComponents/FormCreateVehicule';
 const Tab = createMaterialBottomTabNavigator();
 
 const TabBarIcon=({color, name})=>{
@@ -25,7 +26,7 @@ export const Navigation=()=>{
       <Tab.Navigator
         barStyle={{backgroundColor:'white'}} screenOptions={{ headerShown: false }}>
         <Tab.Screen name="Home" component={StackHome} options={{tabBarIcon:({color})=><TabBarIcon color={color} name='home'/>}} />
-        {/* <Tab.Screen name="Gastos" component={StackGastos} options={{tabBarIcon:({color})=><TabBarIcon color={color} name='car'/>}}/> */}
+        <Tab.Screen name="Gastos" component={StackCar} options={{tabBarIcon:({color})=><TabBarIcon color={color} name='car'/>}}/>
         <Tab.Screen name="Profile" component={StackProfile} options={{tabBarIcon:({color})=><TabBarIcon color={color} name='user-alt'/>}}/>
       </Tab.Navigator>
     </NavigationContainer>
@@ -60,6 +61,16 @@ function StackProfile() {
           <Stack.Screen name="Perfil" component={ProfileScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
+
+        </Stack.Navigator>
+      );
+    }
+
+    function StackCar() {
+      return (
+        <Stack.Navigator >
+        <Stack.Screen name="Mi Vehiculo" component={CarScreen} />
+        <Stack.Screen name="Creando mi Vehiculo" component={FormCreateVehicule} />
         </Stack.Navigator>
       );
     }

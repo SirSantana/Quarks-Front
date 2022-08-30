@@ -3,35 +3,36 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { View, Text, Pressable } from 'react-native'
+import useAuth from '../../hooks/useAuth'
 import { Theme } from '../../theme'
 
-const GET_USER = gql`
-query getUser{
-  getUser{
-        email
-        name
-    }
-  }
-`  
+
 export const ProfileScreen = () => {
   
   const navigation = useNavigation()
-  const [token, setToken] = useState(null)
-  const {loading, data, error} = useQuery(GET_USER)
-  useEffect(()=>{
-    AsyncStorage.getItem('token').then(res=> setToken(res))
-  },[data])
-  console.log('data',data);
+  const{user, logout} = useAuth()
+  console.log('userrrrrr',user);
+  const handleLogout=async()=>{
+    logout()
+    await removeData().then(()=> navigation.navigate('SignIn'))
+  }
+  const removeData = async () => {
+    await AsyncStorage.clear();
+  }
   return (
     <View style={Theme.containers.containerParent}>
       <View style={Theme.containers.containerFlex}>
       <Text>ProfileScreen</Text>
-        {data && <Text style={Theme.fonts.description}>Bienvenido {data.getUser.name}</Text>}
+      {user && <Text style={Theme.fonts.titleRed}>Bienvenido {user?.name}</Text>}
+        {user && <Text style={Theme.fonts.titleRed}>Email {user?.email}</Text>}
+        {user && <Text style={Theme.fonts.titleRed}>Status {user?.role}</Text>}
+
       </View>
       <View style={{width:'90%'}}>
-      {token ?
+      
+      {user?
       <Pressable
-      onPress={()=> AsyncStorage.removeItem('token').then(()=>navigation.navigate('SignIn') )}
+      onPress={handleLogout}
       style={{width:'100%',backgroundColor:'#1b333d', height:50, borderRadius:10,justifyContent:'center', alignItems:'center'}}>
           <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Cerrar Sesion</Text>
   </Pressable>

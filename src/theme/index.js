@@ -11,6 +11,12 @@ export const Theme = {
       fontWeight: "700",
       color: "white",
     },
+    titleBlue: {
+      textAlign:'center',
+      fontSize: 20,
+      fontWeight: "700",
+      color: "#1b333d",
+    },
     titleRed: {
       fontSize: 20,
       fontWeight: "600",

@@ -7,6 +7,7 @@ import { useFormik } from 'formik'
 import * as Yup  from 'yup'
 import { Theme } from '../../theme'
 import { useNavigation } from '@react-navigation/native'
+import useAuth from '../../hooks/useAuth';
 
 const SIGN_IN_MUTATION = gql`
 mutation signIn($email: String!, $password:String!) {
@@ -31,8 +32,10 @@ const validationSchema ={
 }
 export default function SignInScreen(){
   const navigation = useNavigation()
+  const {login} = useAuth()
+
     const formik = useFormik({
-      initialValues:initialForm,
+        initialValues:initialForm,
       validateOnChange:false,
       validationSchema:Yup.object(validationSchema),
       onSubmit:(formValue)=>{
@@ -49,7 +52,13 @@ export default function SignInScreen(){
     },[error])
 
     useEffect(()=>{
-      AsyncStorage.setItem('token',data?.signIn?.token).then(()=> navigation.navigate('Perfil'))
+      if(data){
+        AsyncStorage.clear().then(()=>{
+          AsyncStorage.setItem('token',data?.signIn?.token)
+        })
+        login(data?.signIn)
+        navigation.navigate('Perfil')
+      }
     },[data])
     return(
         <View style={Theme.containers.containerParent}>
