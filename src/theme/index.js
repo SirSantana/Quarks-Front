@@ -27,10 +27,35 @@ export const Theme = {
       fontWeight: "400",
       color: "white",
     },
+    descriptionBlue: {
+      fontSize: 18,
+      fontWeight: "400",
+      color: "#1b333d",
+    },
+    descriptionGray: {
+      fontSize: 18,
+      fontWeight: "400",
+      color: "gray",
+    },
+    titleBig:{
+      textAlign:'center',
+      fontSize: 28,
+      fontWeight: "700",
+      color: "#1b333d",
+    }
   },
   buttons: {
     primary: {
       backgroundColor: "#f50057",
+      height: 50,
+      marginBottom: 10,
+      borderRadius: 10,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    primaryOutlined: {
+      borderColor: "#f50057",
+      borderWidth:2,
       height: 50,
       marginBottom: 10,
       borderRadius: 10,
@@ -52,7 +77,7 @@ export const Theme = {
       justifyContent: "center",
       alignItems: "center",
       height: "100%",
-      backgroundColor: "#f1f1f1",
+      backgroundColor: "white",
     },
     containerFlex: {
       justifyContent: "center",

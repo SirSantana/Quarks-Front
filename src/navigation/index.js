@@ -39,9 +39,6 @@ function StackHome() {
     return (
       <Stack.Navigator >
         <Stack.Screen name="Inicio" component={HomeScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="Perfil" component={ProfileScreen} />
-        <Stack.Screen name="SignIn" component={SignInScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
       </Stack.Navigator>
     );
   }
@@ -70,7 +67,7 @@ function StackProfile() {
       return (
         <Stack.Navigator >
         <Stack.Screen name="Mi Vehiculo" component={CarScreen} />
-        <Stack.Screen name="Creando mi Vehiculo" component={FormCreateVehicule} />
+        <Stack.Screen name="Creando mi Vehiculo" component={FormCreateVehicule}options={{headerShown:false}} />
         </Stack.Navigator>
       );
     }

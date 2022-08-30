@@ -44,7 +44,7 @@ export default function SignInScreen(){
 
     })
     const [signIn, {data, error, loading}] = useMutation(SIGN_IN_MUTATION)
-
+    console.log(data, error);
     useEffect(()=>{
       if(error){
         Alert.alert('Ha ocurrido un error')

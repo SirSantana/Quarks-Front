@@ -15,7 +15,7 @@ export const HomeScreen = () => {
     if(token){
       console.warn('Bien!');
     }else{
-      navigation.navigate('SignUp')
+      navigation.navigate('Profile')
     }
   }
   return (

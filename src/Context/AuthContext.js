@@ -40,7 +40,7 @@ export function AuthProvider({children}){
         setUser(null)
 
         }
-    },[token])
+    },[data])
     const valueContext={
         user,
         login, logout
