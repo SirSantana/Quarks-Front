@@ -60,9 +60,7 @@ useEffect(()=>{
 
 useEffect(()=>{
   if(data){
-    AsyncStorage.clear().then(()=>{
-      AsyncStorage.setItem('token',data?.signUp?.token)
-    })
+    AsyncStorage.setItem('token',data?.signUp?.token)
     console.log('data',data.signUp);
     login(data?.signUp.user)
     navigation.navigate('Perfil')
@@ -85,6 +83,7 @@ useEffect(()=>{
             onChangeText={(text)=> formik.setFieldValue('name', text)}
 
             />
+            
           {formik.errors.lastName && <Text style={{color:'red'}}>{formik.errors.lastName}</Text>}
             <TextInput
           value={formik.values.lastName}

@@ -38,8 +38,8 @@ export const Theme = {
       color: "gray",
     },
     titleBig:{
-      textAlign:'center',
-      fontSize: 28,
+      textAlign:'left',
+      fontSize: 24,
       fontWeight: "700",
       color: "#1b333d",
     }
@@ -90,7 +90,7 @@ export const Theme = {
     basic: {
       height: 50,
       marginBottom: 10,
-      backgroundColor: "white",
+      backgroundColor: "#f1f1f1",
       paddingHorizontal: 10,
       borderColor: "black",
       borderRadius: 10,

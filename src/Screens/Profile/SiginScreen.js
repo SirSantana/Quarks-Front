@@ -16,6 +16,7 @@ mutation signIn($email: String!, $password:String!) {
         email
         id
         name
+        role
       }
       token
     }
@@ -44,7 +45,6 @@ export default function SignInScreen(){
 
     })
     const [signIn, {data, error, loading}] = useMutation(SIGN_IN_MUTATION)
-    console.log(data, error);
     useEffect(()=>{
       if(error){
         Alert.alert('Ha ocurrido un error')
@@ -53,11 +53,8 @@ export default function SignInScreen(){
 
     useEffect(()=>{
       if(data){
-        AsyncStorage.clear().then(()=>{
-          AsyncStorage.setItem('token',data?.signIn?.token)
-        })
-        login(data?.signIn)
-        navigation.navigate('Perfil')
+          AsyncStorage.setItem('token',JSON.stringify(data.signIn.user)).then(()=>navigation.navigate('Perfil'))
+        login(data?.signIn.user)
       }
     },[data])
     return(
@@ -65,10 +62,11 @@ export default function SignInScreen(){
           <Image style={{width:40, height:40}} source={require('../../../assets/LogoQuarks1PNG.png')}/>
           <Text style={{fontSize:30, fontWeight:"700", color:'#f50057' }}>Inicia Sesion</Text>
 
-          <View style={{width:'90%', marginTop:20}}>
+          <View style={{width:'90%', marginTop:20,}}>
 
           {formik.errors.email && <Text style={{color:'red'}}>{formik.errors.email}</Text>}
             <TextInput
+            autoCapitalize='none'
             placeholder='Email'
             value={formik.values.email}
             onChangeText={(text)=> formik.setFieldValue('email', text)}

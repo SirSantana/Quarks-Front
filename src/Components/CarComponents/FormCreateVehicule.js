@@ -1,4 +1,4 @@
-import { View, Text,FlatList, TextInput, TouchableOpacity, Image, Pressable, Alert  } from "react-native";
+import { View, Text,FlatList, TextInput, TouchableOpacity, Image, Pressable, Alert, SafeAreaView, StatusBar  } from "react-native";
 import React, {useEffect, useState} from "react";
 import { marcasCarros } from "./marcasCarros";
 import { Theme } from "../../theme";
@@ -7,7 +7,9 @@ import { TouchableHighlight } from "react-native-gesture-handler";
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from "@react-navigation/native";
 import { marcasMotos } from "./marcasMotos";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
+import { GET_USER } from "../../Context/AuthContext";
+import useAuth from "../../hooks/useAuth";
 
 const CREATE_CAR = gql`
 mutation createVehicule($marca: String, $referencia:String, $modelo:String, $cilindraje:String, $tipo:String, $imagen:String) {
@@ -22,23 +24,25 @@ mutation createVehicule($marca: String, $referencia:String, $modelo:String, $cil
   }
 }
 `
+
 const initialForm ={
   marca:'',
   referencia:'',
   modelo:'',
   cilindraje:'',
-  imagen:''
+  imagen:'',
+  tipo:'',
+  owner:''
 }
   
 export default function FormCreateVehicule({ route }) {
   const [form, setForm] = useState(initialForm)
     const [image, setImage] = useState(null);
     const navigation = useNavigation()
-  const { tipo } = route.params;
+  const { tipo,dataCar } = route.params;
   const [marca, setMarca] = useState(null)
-  const [createVehicule, {data, error, loading}] = useMutation(CREATE_CAR)
-
-
+  const [createVehicule, {data, error, loading}] = useMutation(CREATE_CAR, {awaitRefetchQueries:GET_USER})
+  const {user} = useAuth()
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,7 +58,6 @@ export default function FormCreateVehicule({ route }) {
       setImage(result.uri);
     }
   };
-  console.log(error, loading, data);
   const handleSubmit=()=>{
     setForm({...form, tipo:tipo})
     createVehicule({variables:form})
@@ -64,10 +67,9 @@ export default function FormCreateVehicule({ route }) {
 
       setMarca(itemMarca)
   }
- 
   const renderItem=(item)=>{
         return(
-            <Pressable onPressIn={()=>handleChange(item.marca)} style={{width:70, height:70, margin:10, backgroundColor:marca === item.marca ? '#1b333d': 'white',justifyContent:'center', alignItems:'center', borderRadius:10}}>
+            <Pressable onPressIn={()=>handleChange(item.marca)} style={{width:70, height:70, margin:10, backgroundColor:marca === item.marca ? '#1b333d': '#f1f1f1',justifyContent:'center', alignItems:'center', borderRadius:10}}>
         <Image style={{width:40, height:40}} source={item.src}/>
         </Pressable>
 
@@ -82,16 +84,17 @@ export default function FormCreateVehicule({ route }) {
         
         useEffect(()=>{
           if(data){
-            navigation.navigate('Mi Vehiculo')
+            navigation.navigate('Mi Vehiculo',{data:data.createVehicule})
           }
         },[data])
   return (
-    <View style={Theme.containers.containerParent}>
-        
-      <Text style={Theme.fonts.titleBig}>Completa los datos de tu vehiculo</Text>
+    <SafeAreaView style={Theme.containers.containerParent}>
+      
 
-      <View style={{width:'90%',backgroundColor:'#f1f1f1',marginTop:20, borderRadius:10, padding:20,boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"}}>
-      <Text style={Theme.fonts.descriptionGray}>Selecciona la marca</Text>
+      <View style={{width:'100%', borderRadius:10, padding:20,}}>
+      <Text style={Theme.fonts.titleBig}>Completa los datos de tu vehiculo</Text>
+      
+      <Text style={[Theme.fonts.descriptionGray,{marginTop:10}]}>Selecciona la marca</Text>
 
             {tipo === 'Carro' 
             ?<FlatList
@@ -107,11 +110,13 @@ export default function FormCreateVehicule({ route }) {
             }
             
       <Text style={Theme.fonts.descriptionGray}>Referencia</Text>
+      
       <TextInput
             placeholder={tipo === 'Carro' ? 'Aveo': 'Mt-03'}
             onChangeText={(text)=> setForm({...form, referencia:text})}
             style={Theme.input.basic}
             />
+            
       <Text style={Theme.fonts.descriptionGray}>Modelo</Text>
 
             <TextInput
@@ -136,7 +141,7 @@ export default function FormCreateVehicule({ route }) {
             >
                 {image && <Image source={{ uri: image }} style={{ width: 50, height: 50 }} />}
             </TouchableHighlight>
-            <Pressable onPress={pickImage} style={[Theme.buttons.primaryOutlined,{width:'50%'}]}>
+            <Pressable onPress={pickImage} style={{width:'50%'}}>
                 <Text style={{color:'#f50057', fontSize:18, fontWeight:"600"}}>{image? "Cambiar Imagen":"Agregar Imagen" }</Text>
             </Pressable>
            </View>
@@ -151,7 +156,7 @@ export default function FormCreateVehicule({ route }) {
       </View>
       
       
-    </View>
+    </SafeAreaView>
   );
 }
  

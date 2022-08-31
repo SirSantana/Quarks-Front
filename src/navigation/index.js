@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { Foundation } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {CarScreen} from '../Screens/Car/CarScreen'
@@ -9,7 +10,7 @@ import { SignUpScreen } from '../Screens/Profile/SignUpScreen';
 import { HomeScreen } from '../Screens/Home/HomeScreen';
 import { ProfileScreen } from '../Screens/Profile/ProfileScreen';
 import FormCreateVehicule from '../Components/CarComponents/FormCreateVehicule';
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const TabBarIcon=({color, name})=>{
   if(name === 'home'){
@@ -67,7 +68,7 @@ function StackProfile() {
       return (
         <Stack.Navigator >
         <Stack.Screen name="Mi Vehiculo" component={CarScreen} />
-        <Stack.Screen name="Creando mi Vehiculo" component={FormCreateVehicule}options={{headerShown:false}} />
+        <Stack.Screen name="Creando mi Vehiculo" component={FormCreateVehicule} />
         </Stack.Navigator>
       );
     }

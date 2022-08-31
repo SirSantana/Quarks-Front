@@ -8,17 +8,13 @@ import { Theme } from '../../theme'
 
 
 export const ProfileScreen = () => {
-  
   const navigation = useNavigation()
   const{user, logout} = useAuth()
-  console.log('userrrrrr',user);
-  const handleLogout=async()=>{
-    logout()
-    await removeData().then(()=> navigation.navigate('SignIn'))
+
+  const handleLogout=()=>{
+    AsyncStorage.clear().then(()=> navigation.navigate('SignIn')).then(()=> logout())
   }
-  const removeData = async () => {
-    await AsyncStorage.clear();
-  }
+  AsyncStorage.getItem('token').then(res=> console.log(res))
   return (
     <View style={Theme.containers.containerParent}>
       <View style={Theme.containers.containerFlex}>
