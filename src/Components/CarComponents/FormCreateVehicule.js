@@ -10,6 +10,7 @@ import { marcasMotos } from "./marcasMotos";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { GET_USER } from "../../Context/AuthContext";
 import useAuth from "../../hooks/useAuth";
+import { SIGN_IN_MUTATION } from "../../Screens/Profile/SiginScreen";
 
 const CREATE_CAR = gql`
 mutation createVehicule($marca: String, $referencia:String, $modelo:String, $cilindraje:String, $tipo:String, $imagen:String) {
@@ -20,7 +21,6 @@ mutation createVehicule($marca: String, $referencia:String, $modelo:String, $cil
     cilindraje
     marca
     imagen
-    
   }
 }
 `
@@ -32,7 +32,6 @@ const initialForm ={
   cilindraje:'',
   imagen:'',
   tipo:'',
-  owner:''
 }
   
 export default function FormCreateVehicule({ route }) {
@@ -41,8 +40,9 @@ export default function FormCreateVehicule({ route }) {
     const navigation = useNavigation()
   const { tipo,dataCar } = route.params;
   const [marca, setMarca] = useState(null)
-  const [createVehicule, {data, error, loading}] = useMutation(CREATE_CAR, {awaitRefetchQueries:GET_USER})
+  const [createVehicule, {data, error, loading}] = useMutation(CREATE_CAR)
   const {user} = useAuth()
+  console.log(user);
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,18 +54,24 @@ export default function FormCreateVehicule({ route }) {
 
 
     if (!result.cancelled) {
-      setForm({...form, imagen:result.uri})
+      setForm({...form, imagen:result.uri, user:user.id})
       setImage(result.uri);
     }
   };
   const handleSubmit=()=>{
     setForm({...form, tipo:tipo})
+    console.log(form);
+
     createVehicule({variables:form})
   }
   const handleChange=(itemMarca)=>{
     setForm({...form, marca:itemMarca})
 
       setMarca(itemMarca)
+  }
+  if(error){
+    Alert.alert('ERROR', error?.message)
+
   }
   const renderItem=(item)=>{
         return(

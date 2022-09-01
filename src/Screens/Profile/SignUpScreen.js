@@ -60,9 +60,8 @@ useEffect(()=>{
 
 useEffect(()=>{
   if(data){
-    AsyncStorage.setItem('token',data?.signUp?.token)
-    console.log('data',data.signUp);
-    login(data?.signUp.user)
+    AsyncStorage.setItem('token',data?.signUp)
+    login(data?.signUp?.user)
     navigation.navigate('Perfil')
   }
 },[data])

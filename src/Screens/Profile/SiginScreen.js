@@ -9,7 +9,7 @@ import { Theme } from '../../theme'
 import { useNavigation } from '@react-navigation/native'
 import useAuth from '../../hooks/useAuth';
 
-const SIGN_IN_MUTATION = gql`
+export const SIGN_IN_MUTATION = gql`
 mutation signIn($email: String!, $password:String!) {
     signIn(input:{email: $email, password:$password}) {
       user {
@@ -17,6 +17,14 @@ mutation signIn($email: String!, $password:String!) {
         id
         name
         role
+        vehiculos {
+          referencia
+          modelo
+          cilindraje
+          tipo
+          marca
+          id
+        }
       }
       token
     }
@@ -53,7 +61,7 @@ export default function SignInScreen(){
 
     useEffect(()=>{
       if(data){
-          AsyncStorage.setItem('token',JSON.stringify(data.signIn.user)).then(()=>navigation.navigate('Perfil'))
+          AsyncStorage.setItem('token',JSON.stringify(data.signIn)).then(()=>navigation.navigate('Perfil'))
         login(data?.signIn.user)
       }
     },[data])

@@ -8,7 +8,6 @@ import { Theme } from "../../theme";
 export const HomeScreen = () => {
   const [token, setToken] = useState(null)
   const {user} = useAuth()
-  console.log('user',user);
   const navigation = useNavigation()
 
   const handleContinue=()=>{

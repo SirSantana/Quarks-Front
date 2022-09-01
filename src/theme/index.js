@@ -42,6 +42,12 @@ export const Theme = {
       fontSize: 24,
       fontWeight: "700",
       color: "#1b333d",
+    },
+    titleBigWhite:{
+      textAlign:'left',
+      fontSize: 24,
+      fontWeight: "700",
+      color: "white",
     }
   },
   buttons: {
@@ -96,4 +102,10 @@ export const Theme = {
       borderRadius: 10,
     },
   },
+  shadow:{
+    basic:{
+      elevation: 20,
+    shadowColor: '#52006A',
+    }
+  }
 };
