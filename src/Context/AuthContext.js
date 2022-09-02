@@ -8,22 +8,37 @@ export const AuthContext = createContext({
     login:()=>{},
     logout:()=>{}
 })
-
+const GET_USER = gql`
+    query getUser{
+        getUser{
+            name
+            email
+            vehiculos{
+                tipo
+                referencia
+                modelo
+                marca
+                cilindraje
+                imagen
+            }
+        }
+    }
+`
 
 export function AuthProvider({children}){
     const [user, setUser] = useState(null)
     const [token, setToken] = useState(null)
+    const result = useQuery(GET_USER)
+    console.log('res',result?.data);
     const login=(dataa)=>{
-        setUser(dataa)
+        setUser(result?.data.getUser)
     }
-    
     const logout = ()=>{
     setUser(null)
     }
     const getUser = async () => {
         try {
-          const userData = JSON.parse(await AsyncStorage.getItem("token"))
-          setUser(userData.user)
+          setUser(result?.data.getUser)
         } catch (error) {
          console.log(error); 
         }

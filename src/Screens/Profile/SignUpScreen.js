@@ -7,6 +7,7 @@ import { useFormik } from 'formik'
 import { gql, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import useAuth from '../../hooks/useAuth'
+
 const SIGN_UP = gql`
 mutation signUp($email: String!, $password:String!, $name:String!, $lastName:String!, $confirmPassword:String!) {
   signUp(input:{email: $email, password:$password, name:$name, confirmPassword:$confirmPassword, lastName:$lastName}) {
@@ -60,9 +61,8 @@ useEffect(()=>{
 
 useEffect(()=>{
   if(data){
-    AsyncStorage.setItem('token',data?.signUp)
+    AsyncStorage.setItem('token',JSON.stringify(data.signUp)).then(()=>navigation.navigate('Perfil'))
     login(data?.signUp?.user)
-    navigation.navigate('Perfil')
   }
 },[data])
 

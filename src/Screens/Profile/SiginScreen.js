@@ -61,7 +61,7 @@ export default function SignInScreen(){
 
     useEffect(()=>{
       if(data){
-          AsyncStorage.setItem('token',JSON.stringify(data.signIn)).then(()=>navigation.navigate('Perfil'))
+          AsyncStorage.setItem('token',JSON.stringify(data.signIn.token)).then(()=>navigation.navigate('Perfil'))
         login(data?.signIn.user)
       }
     },[data])

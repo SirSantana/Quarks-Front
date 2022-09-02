@@ -10,19 +10,27 @@ import { marcasMotos } from "./marcasMotos";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { GET_USER } from "../../Context/AuthContext";
 import useAuth from "../../hooks/useAuth";
-import { SIGN_IN_MUTATION } from "../../Screens/Profile/SiginScreen";
 
 const CREATE_CAR = gql`
-mutation createVehicule($marca: String, $referencia:String, $modelo:String, $cilindraje:String, $tipo:String, $imagen:String) {
-  createVehicule(input:{marca: $marca, referencia:$referencia, modelo:$modelo, cilindraje:$cilindraje, tipo:$tipo, imagen:$imagen}) {
+mutation createCar($marca:String, $tipo:String, $referencia:String, $modelo:String, $cilindraje:String, $user:ID, $imagen:String) {
+  createCar(input: {marca:$marca, tipo:$tipo, referencia:$referencia,modelo:$modelo, cilindraje:$cilindraje, user:$user, imagen:$imagen}) {
     tipo
     referencia
     modelo
     cilindraje
     marca
     imagen
+    id
   }
 }
+`
+const GET_ALL_USERS = gql`
+  query getAllUsers{
+     getAllUsers{
+      name 
+      email
+    }
+  }
 `
 
 const initialForm ={
@@ -32,6 +40,7 @@ const initialForm ={
   cilindraje:'',
   imagen:'',
   tipo:'',
+  user:''
 }
   
 export default function FormCreateVehicule({ route }) {
@@ -42,9 +51,7 @@ export default function FormCreateVehicule({ route }) {
   const [marca, setMarca] = useState(null)
   const [createVehicule, {data, error, loading}] = useMutation(CREATE_CAR)
   const {user} = useAuth()
-  console.log(user);
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
