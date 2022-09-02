@@ -61,7 +61,7 @@ useEffect(()=>{
 
 useEffect(()=>{
   if(data){
-    AsyncStorage.setItem('token',JSON.stringify(data.signUp)).then(()=>navigation.navigate('Perfil'))
+    AsyncStorage.setItem('token',JSON.stringify(data.signUp.token)).then(()=>navigation.navigate('Perfil'))
     login(data?.signUp?.user)
   }
 },[data])

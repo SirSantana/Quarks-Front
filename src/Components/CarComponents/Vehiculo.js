@@ -23,7 +23,7 @@ export default function Vehiculo(item, setCreate){
           </View>
           <View style={{width:'100%', padding:20, position:'absolute', top:'45%'}}>
           <Text style={{fontSize:40, color:'white', fontWeight:'700'}}>{item.marca}</Text>
-          <Text style={{fontSize:40, color:'white', fontWeight:'700', lineHeight:40}}>{item.referencia}</Text>
+          <Text style={{fontSize:24, color:'white', fontWeight:'700', lineHeight:40}}>{item.referencia}</Text>
           <Text style={Theme.fonts.description}>{item.modelo}</Text>
 
           {/* <Image style={{width:40, height:40, marginBottom:20}} source={marca.src}/> */}

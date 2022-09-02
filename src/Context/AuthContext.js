@@ -29,23 +29,23 @@ export function AuthProvider({children}){
     const [user, setUser] = useState(null)
     const [token, setToken] = useState(null)
     const result = useQuery(GET_USER)
-    console.log('res',result?.data);
     const login=(dataa)=>{
-        setUser(result?.data.getUser)
+        setUser(result?.data?.getUser)
     }
     const logout = ()=>{
     setUser(null)
     }
     const getUser = async () => {
         try {
-          setUser(result?.data.getUser)
+            console.log('res', result?.data);
+          setUser(result?.data?.getUser)
         } catch (error) {
          console.log(error); 
         }
       };
     useEffect(()=>{
          getUser()
-    },[])
+    },[result])
     const valueContext={
         user,
         login, logout
