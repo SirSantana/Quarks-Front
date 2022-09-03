@@ -10,7 +10,9 @@ import { SignUpScreen } from '../Screens/Profile/SignUpScreen';
 import { HomeScreen } from '../Screens/Home/HomeScreen';
 import { ProfileScreen } from '../Screens/Profile/ProfileScreen';
 import FormCreateVehicule from '../Components/CarComponents/FormCreateVehicule';
+import VehiculeDataScreen from '../Screens/Car/VehiculeDataScreen';
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const TabBarIcon=({color, name})=>{
   if(name === 'home'){
@@ -35,7 +37,6 @@ export const Navigation=()=>{
 
 }
 
-const Stack = createStackNavigator();
 function StackHome() {
     return (
       <Stack.Navigator >
@@ -66,9 +67,15 @@ function StackProfile() {
 
     function StackCar() {
       return (
-        <Stack.Navigator >
-        <Stack.Screen name="Mi Vehiculo" component={CarScreen} />
-        <Stack.Screen name="Creando mi Vehiculo" component={FormCreateVehicule} />
+        <Stack.Navigator screenOptions={{
+          headerStyle: {
+            shadowColor: "#000",
+            backgroundColor:'#1b333d'
+          },headerTintColor: 'white'
+          }}>
+        <Stack.Screen name="Mi Vehiculo" component={CarScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="Creando mi Vehiculo" component={FormCreateVehicule}  />
+        <Stack.Screen name="Vehiculo" component={VehiculeDataScreen}/>
         </Stack.Navigator>
       );
     }

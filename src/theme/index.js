@@ -13,7 +13,7 @@ export const Theme = {
     },
     titleBlue: {
       textAlign:'center',
-      fontSize: 20,
+      fontSize: 24,
       fontWeight: "700",
       color: "#1b333d",
     },
@@ -83,7 +83,7 @@ export const Theme = {
       justifyContent: "center",
       alignItems: "center",
       height: "100%",
-      backgroundColor: "white",
+      backgroundColor: "#f1f1f1",
     },
     containerFlex: {
       justifyContent: "center",
@@ -96,7 +96,7 @@ export const Theme = {
     basic: {
       height: 50,
       marginBottom: 10,
-      backgroundColor: "#f1f1f1",
+      backgroundColor: "white",
       paddingHorizontal: 10,
       borderColor: "black",
       borderRadius: 10,

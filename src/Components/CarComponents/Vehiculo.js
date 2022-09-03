@@ -3,44 +3,61 @@ import { View, Text,FlatList, TextInput, TouchableOpacity, Image, Pressable, Ale
 import { Theme } from '../../theme';
 
 
-export default function Vehiculo(item, setCreate){
+export default function Vehiculo({item}){
   const { width,height } = Dimensions.get('window');
-
-        const marca = marcasCarros.find(el=> el.marca === item.marca)
+  const marca = marcasCarros.find(el=> el.marca === item.marca)
+  console.log(item.modelo);
     return(
-        <View style={{backgroundColor:Theme.colors.primary, width:300, borderRadius:10, marginRight:40, height:500}}>
+        <View style={{backgroundColor:"white", width:300, borderRadius:20, marginRight:20, height:500, }}>
           <View style={{height: '80%',
           width: '100%',
           position: 'relative',
           overflow: 'hidden',
+          
           }}>
 
+          {item?.imagen
+           ?<Image   style={{
+             resizeMode:'cover',
+             borderRadius:20,
+           width: '100%',
+           height: 230}} source={{uri:item.imagen}}/>
+          :
           <Image resizeMode='contain'  style={{position: 'absolute',opacity:.8, tintColor:'rgba(242,241,239,0.8)',
             top: 30,
             right:-50,
             width: width,
-            height: 200}} source={require('../../../assets/carroBlanco.png')}/>
+            height: 200}} source={require('../../../assets/carroBlanco.png')}/>}
           </View>
           <View style={{width:'100%', padding:20, position:'absolute', top:'45%'}}>
-          <Text style={{fontSize:40, color:'white', fontWeight:'700'}}>{item.marca}</Text>
-          <Text style={{fontSize:24, color:'white', fontWeight:'700', lineHeight:40}}>{item.referencia}</Text>
-          <Text style={Theme.fonts.description}>{item.modelo}</Text>
+            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+            <View>
+            <Text style={{fontSize:30, color:Theme.colors.secondary, fontWeight:'700'}}>{item.marca} {item.referencia}</Text>
+            {/* <Text style={{fontSize:24, color:Theme.colors.secondary, fontWeight:'500', lineHeight:28}}>{item.referencia}</Text> */}
+            </View>
+            
+            <Image  style={{height: 50, width:50}} source={marca.src}/>
 
-          {/* <Image style={{width:40, height:40, marginBottom:20}} source={marca.src}/> */}
-          <Pressable
-            // onPress={()=> navigation.navigate('SignIn')}
-            style={{width:'100%',backgroundColor:'#1b333d',marginTop:20, height:50, borderRadius:10,justifyContent:'center', alignItems:'center'}}>
-                <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Ver Auto</Text>
-        </Pressable>
-        <Pressable
-            onPress={()=> setCreate(true)}
-            style={Theme.buttons.primaryOutlined}>
-                <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Crear otro Vehiculo</Text>
-        </Pressable>
+            </View>
+            {/* <Text style={Theme.fonts.descriptionBlue}>{item.modelo}</Text> */}
+
+
+          <View style={{justifyContent:'space-between'}}>
+            <View  style={{flexDirection:'row', justifyContent:'space-between'}}>
+            <Text style={[Theme.fonts.descriptionBlue,{fontWeight:"600"}]}>Balance</Text>
+          <Text style={[Theme.fonts.descriptionBlue,{fontWeight:"600"}]}>$ 100.000</Text>
+            </View>
+          
+          <View style={{backgroundColor:'#f1f1f1'}}>
+            
+          </View>
+
+          </View>
           </View>
           
   
           </View>
+
             )
             
 }

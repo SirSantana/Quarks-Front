@@ -10,9 +10,8 @@ import { Theme } from '../../theme'
 export const ProfileScreen = () => {
   const navigation = useNavigation()
   const{user, logout} = useAuth()
-console.log(user);
   const handleLogout=()=>{
-    AsyncStorage.clear().then(()=> navigation.navigate('SignIn')).then(()=> logout())
+    AsyncStorage.clear().then(()=> logout()).then(()=> navigation.navigate('SignIn'))
   }
   return (
     <View style={Theme.containers.containerParent}>
