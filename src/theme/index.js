@@ -12,7 +12,6 @@ export const Theme = {
       color: "white",
     },
     titleBlue: {
-      textAlign:'center',
       fontSize: 24,
       fontWeight: "700",
       color: "#1b333d",
@@ -29,7 +28,7 @@ export const Theme = {
     },
     descriptionBlue: {
       fontSize: 18,
-      fontWeight: "400",
+      fontWeight: "500",
       color: "#1b333d",
     },
     descriptionGray: {
@@ -37,18 +36,18 @@ export const Theme = {
       fontWeight: "400",
       color: "gray",
     },
-    titleBig:{
-      textAlign:'left',
+    titleBig: {
+      textAlign: "left",
       fontSize: 24,
       fontWeight: "700",
       color: "#1b333d",
     },
-    titleBigWhite:{
-      textAlign:'left',
+    titleBigWhite: {
       fontSize: 24,
       fontWeight: "700",
       color: "white",
-    }
+      textAlign: "left",
+    },
   },
   buttons: {
     primary: {
@@ -61,7 +60,7 @@ export const Theme = {
     },
     primaryOutlined: {
       borderColor: "#f50057",
-      borderWidth:2,
+      borderWidth: 2,
       height: 50,
       marginBottom: 10,
       borderRadius: 10,
@@ -70,11 +69,11 @@ export const Theme = {
     },
     secondary: {
       height: 50,
-      marginTop:10,
+      marginTop: 10,
       borderRadius: 10,
       justifyContent: "center",
       alignItems: "center",
-      width:'100%',
+      width: "100%",
       backgroundColor: "#1b333d",
     },
   },
@@ -83,13 +82,28 @@ export const Theme = {
       justifyContent: "center",
       alignItems: "center",
       height: "100%",
-      backgroundColor: "#f1f1f1",
+      backgroundColor: "#f1f1fb",
     },
     containerFlex: {
       justifyContent: "center",
       alignItems: "center",
       flex: 1,
       backgroundColor: "#f1f1f1",
+    },
+    containerBox: {
+      shadowOpacity: 0.3,
+      shadowRadius: 5.46,
+      shadowOffset: {
+        width: 4,
+        height: 3,
+        shadowColor: "#000",
+      },
+      width: 100,
+      height: 100,
+      justifyContent: "center",
+      alignItems: "center",
+      borderRadius: 10,
+      backgroundColor:"#f50057"
     },
   },
   input: {
@@ -102,10 +116,10 @@ export const Theme = {
       borderRadius: 10,
     },
   },
-  shadow:{
-    basic:{
+  shadow: {
+    basic: {
       elevation: 20,
-    shadowColor: '#52006A',
-    }
-  }
+      shadowColor: "#52006A",
+    },
+  },
 };

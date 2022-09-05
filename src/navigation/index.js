@@ -53,7 +53,7 @@ function StackProfile() {
           headerShown: true,
           headerStyle: {
             shadowColor: "#000",
-            backgroundColor:'red'
+            backgroundColor:'#464646'
           },
           headerTintColor: 'white'}}>
             
@@ -70,12 +70,12 @@ function StackProfile() {
         <Stack.Navigator screenOptions={{
           headerStyle: {
             shadowColor: "#000",
-            backgroundColor:'#1b333d'
+            backgroundColor:'#464646'
           },headerTintColor: 'white'
           }}>
         <Stack.Screen name="Mi Vehiculo" component={CarScreen} options={{headerShown:false}}/>
         <Stack.Screen name="Creando mi Vehiculo" component={FormCreateVehicule}  />
-        <Stack.Screen name="Vehiculo" component={VehiculeDataScreen}/>
+        <Stack.Screen name="Vehiculo" component={VehiculeDataScreen}options={{headerShown:false}} />
         </Stack.Navigator>
       );
     }

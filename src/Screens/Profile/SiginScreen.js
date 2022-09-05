@@ -8,6 +8,7 @@ import * as Yup  from 'yup'
 import { Theme } from '../../theme'
 import { useNavigation } from '@react-navigation/native'
 import useAuth from '../../hooks/useAuth';
+import GET_USER from '../../Context/AuthContext'
 
 export const SIGN_IN_MUTATION = gql`
 mutation signIn($email: String!, $password:String!) {
@@ -17,14 +18,6 @@ mutation signIn($email: String!, $password:String!) {
         id
         name
         role
-        vehiculos {
-          referencia
-          modelo
-          cilindraje
-          tipo
-          marca
-          id
-        }
       }
       token
     }
@@ -52,7 +45,7 @@ export default function SignInScreen(){
       },
 
     })
-    const [signIn, {data, error, loading}] = useMutation(SIGN_IN_MUTATION)
+    const [signIn, {data, error, loading}] = useMutation(SIGN_IN_MUTATION, {refetchQueries:[{query:GET_USER}]})
     useEffect(()=>{
       if(error){
         Alert.alert('Ha ocurrido un error')

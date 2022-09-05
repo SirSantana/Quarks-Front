@@ -4,13 +4,14 @@ import { marcasCarros } from "./marcasCarros";
 import { Theme } from "../../theme";
 import { Avatar, Divider, Button } from "react-native-paper";
 import { TouchableHighlight } from "react-native-gesture-handler";
-import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from "@react-navigation/native";
 import { marcasMotos } from "./marcasMotos";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { GET_USER } from "../../Context/AuthContext";
 import useAuth from "../../hooks/useAuth";
 import { GET_VEHICLES } from "../../Screens/Car/CarScreen";
+import * as ImagePicker from 'expo-image-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 const CREATE_CAR = gql`
 mutation createCar($marca:String, $tipo:String, $referencia:String, $modelo:String, $cilindraje:String, $user:ID, $imagen:String) {
   createCar(input: {marca:$marca, tipo:$tipo, referencia:$referencia,modelo:$modelo, cilindraje:$cilindraje, user:$user, imagen:$imagen}) {
@@ -54,19 +55,21 @@ export default function FormCreateVehicule({ route }) {
   const [createVehicule, {data, error, loading}] = useMutation(CREATE_CAR, {refetchQueries:[{query:GET_VEHICLES}]})
   const {user} = useAuth()
   const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
       quality: 1,
+      base64:true
     });
 
 
     if (!result.cancelled) {
-      setForm({...form, imagen:result.uri, user:user.id})
       setImage(result.uri);
+      setForm({...form, imagen:result.base64})
     }
   };
+
   const handleSubmit=()=>{
       setForm({...form})
     createVehicule({variables:form})
@@ -108,6 +111,10 @@ export default function FormCreateVehicule({ route }) {
         },[])
         const [modalVisible, setModalVisible] = useState(false);
   return (
+    <KeyboardAwareScrollView 
+    resetScrollToCoords={{ x: 0, y: 0 }}
+        keyboardShouldPersistTaps= 'always'
+        style= {{ flex:1 }}>
     <SafeAreaView style={Theme.containers.containerParent}>
          <Modal
         animationType="slide"
@@ -204,6 +211,8 @@ export default function FormCreateVehicule({ route }) {
       
       
     </SafeAreaView>
+        </KeyboardAwareScrollView>
+
   );
 }
 const styles = StyleSheet.create({

@@ -8,7 +8,7 @@ export const AuthContext = createContext({
     login:()=>{},
     logout:()=>{}
 })
- const GET_USER = gql`
+export const GET_USER = gql`
     query getUser{
         getUser{
             name
@@ -24,9 +24,12 @@ export function AuthProvider({children}){
     const result = useQuery(GET_USER)
     console.log('us',result.data);
 
-    AsyncStorage.getItem('token').then(res=> console.log(res))
+    AsyncStorage.getItem('token').then(res=> setToken(res))
     const login=(dataa)=>{
-        setUser(result?.data?.getUser)
+        if(result?.data?.getUser){
+            setUser(result?.data?.getUser)
+
+        }
     }
     const logout = ()=>{
     setUser(null)
@@ -43,6 +46,7 @@ export function AuthProvider({children}){
         console.log('hola');
         AsyncStorage.getItem('token').then(res=> setToken(res))
          getUser()
+         setUser(result?.data?.getUser)
     },[result, token])
     const valueContext={
         user,

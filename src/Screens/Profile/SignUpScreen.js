@@ -7,6 +7,7 @@ import { useFormik } from 'formik'
 import { gql, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import useAuth from '../../hooks/useAuth'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const SIGN_UP = gql`
 mutation signUp($email: String!, $password:String!, $name:String!, $lastName:String!, $confirmPassword:String!) {
@@ -38,6 +39,7 @@ const validationSchema ={
   .oneOf([Yup.ref('password'), null], 'Passwords must match'),
 
 }
+
 export const SignUpScreen = () => {
   const [signUp, {data, error, loading}] = useMutation(SIGN_UP)
 
@@ -67,6 +69,10 @@ useEffect(()=>{
 },[data])
 
     return(
+      <KeyboardAwareScrollView 
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        keyboardShouldPersistTaps= 'always'
+        style= {{ flex:1 }}>
         <View style={Theme.containers.containerParent}>
           <Image style={{width:40, height:40}} source={require('../../../assets/LogoQuarks1PNG.png')}/>
           <Text style={{fontSize:30, fontWeight:"700", color:'#f50057' }}>Registrate</Text>
@@ -130,5 +136,6 @@ useEffect(()=>{
             
            
         </View>
+        </KeyboardAwareScrollView>
     )
 }
