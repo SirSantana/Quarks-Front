@@ -14,9 +14,9 @@ export default function VehiculeDataScreen({route}) {
     const {item} = route.params
   const marca = marcasCarros.find(el=> el.marca === item.marca)
   let tiposGastos = [
-    {tipo:'Lavadero', icon:"local-car-wash"},
+    {tipo:'Lavada', icon:"local-car-wash"},
     {tipo:'Tanqueada', icon:"fuel"},
-    {tipo:'Repuestos', icon:"car-wrench"},
+    {tipo:'Repuesto', icon:"car-wrench"},
     {tipo:'Parqueadero', icon:"car-brake-parking"},
     {tipo:'Mantenimiento', icon:"car-repair"},
 
@@ -65,8 +65,9 @@ const {height} = Dimensions.get('window')
             right:-50,
             width: width,
             height: 200}} source={require('../../../assets/carroBlanco.png')}/>}
-
-      <AntDesign onPress={()=> navigation.goBack()} name="left" size={35} color="white" style={{position:'absolute', top:40, left:10}} />
+        <AntDesign onPress={()=> navigation.goBack()} name="left" size={35} color="white"  style={{position:'absolute', top:40, left:10}}/>
+          
+          
           <View style={{margin:20, flexDirection:'row', alignItems:'center',}}>
           <Image  style={{height: 50, width:50, marginRight:20}} source={marca?.src}/>
           <View>
@@ -83,7 +84,7 @@ const {height} = Dimensions.get('window')
       },}}>
             <View style={{borderRadius:10,marginBottom:5, height:50, padding:5, justifyContent:'center'}}>
               <View style={{justifyContent:'space-between', flexDirection:'row'}}>
-              <Text style={Theme.fonts.titleBig}>Gastos </Text>
+              <Text style={[Theme.fonts.titleBig,{fontSize:20}]}>Gastos </Text>
               <Text style={Theme.fonts.descriptionBlue}>Ver Todo</Text>
               </View>
 
@@ -144,11 +145,10 @@ const {height} = Dimensions.get('window')
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <View style={{flexDirection:'row', alignItems:'center', marginTop:20, justifyContent:'space-between'}}>
+            <Pressable onPress={()=> setModalVisible(false)} style={{flexDirection:'row', alignItems:'center', marginTop:20, justifyContent:'space-between'}}>
           <Text style={Theme.fonts.titleWhite}>Selecciona un Tipo</Text>
-          <Entypo onPress={()=> setModalVisible(false)} name="triangle-down" size={30} color="white" />
-
-            </View>
+          <Image    style={{width:40, height:40, marginLeft:10, transform: [{rotate: '180deg'}]}} source={require('../../../assets/iconTriangule.png')}/>
+            </Pressable>
           <FlatList
             horizontal
             style={{width:'100%'}}

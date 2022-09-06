@@ -5,6 +5,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import { AntDesign } from '@expo/vector-icons';
+let tiposGastos = [
+    {tipo:'Lavada', icon:"local-car-wash"},
+    {tipo:'Tanqueada', icon:"fuel"},
+    {tipo:'Repuestos', icon:"car-wrench"},
+    {tipo:'Parqueadero', icon:"car-brake-parking"},
+    {tipo:'Mantenimiento', icon:"car-repair"},
+
+]
 
 export default function ModalCreateGasto({tipoGasto, setModalVisible2}){
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -43,8 +52,8 @@ export default function ModalCreateGasto({tipoGasto, setModalVisible2}){
           <View style={styles.modalView}>
             <View style={{flexDirection:'row', justifyContent:'space-between', marginBottom:20}}>
             <View>
-            <Text style={Theme.fonts.titleBlue}>Añade tu Tanqueada</Text>
-            <Text style={[Theme.fonts.descriptionGray,{lineHeight:16}]}>Agrega tu tanqueada</Text>
+            <Text style={Theme.fonts.titleBlue}>Añade tu {tiposGastos.map(el=> el.icon === tipoGasto && el.tipo)}</Text>
+            <Text style={[Theme.fonts.descriptionGray,{lineHeight:18}]}>Completa los datos</Text>
             </View>
             {tipoGasto === 'fuel' || tipoGasto === 'car-brake-parking' || tipoGasto === "car-wrench"?
            <MaterialCommunityIcons name={tipoGasto} size={40} color='#1b333d' />
@@ -52,27 +61,12 @@ export default function ModalCreateGasto({tipoGasto, setModalVisible2}){
             
             </View>
             
-            
-            <Text style={Theme.fonts.descriptionGray}>Dinero Gastado</Text>
-                <TextInput
-                placeholder='80.000'
-                style={Theme.input.basic}
-                />
-                <Text style={Theme.fonts.descriptionGray}>Nombre Establecimiento(Opcional)</Text>
-
-                <TextInput
-                placeholder=''
-                style={Theme.input.basic}
-                />
-                
-                {image && <Image source={{ uri: image }} style={{ width: 50, height: 50 }} />}
-            <Pressable onPress={pickImage} style={{width:'50%'}}>
-                <Text style={{color:'#f50057', fontSize:18, fontWeight:"600"}}>{image? "Cambiar Imagen":"Agregar Imagen" }</Text>
-            </Pressable>
-                <Text style={Theme.fonts.descriptionGray}>
+            <View style={{flexDirection:'row', alignItems:'center',marginBottom:10, justifyContent:'space-between'}}>
+                <Text style={Theme.fonts.descriptionBlue}>
                     {selectedDate ? selectedDate.toLocaleDateString() : 'No date selected'}
                 </Text>
-                    <Button title="Select a date" onPress={showDatePicker} style={{backgroundColor:'red'}}/>
+                <Text onPress={showDatePicker} style={Theme.fonts.descriptionBlue}>{selectedDate ? 'Cambia la fecha' : 'Agrega una fecha'}</Text>
+                </View>
                     <DateTimePickerModal
                     date={selectedDate}
                     isVisible={datePickerVisible}
@@ -80,11 +74,37 @@ export default function ModalCreateGasto({tipoGasto, setModalVisible2}){
                     onConfirm={handleConfirm}
                     onCancel={hideDatePicker}
                     />
+            <Text style={Theme.fonts.descriptionGray}>Dinero Gastado</Text>
+                <TextInput
+                placeholder='80.000'
+                style={Theme.input.basic}
+                />
+                {/* <Text style={Theme.fonts.descriptionGray}>Nombre Establecimiento(Opcional)</Text>
+
+                <TextInput
+                placeholder=''
+                style={Theme.input.basic}
+                /> */}
+                
+                {/* <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between',marginBottom:10}}>
+                {image && <Image source={{ uri: image }} style={{ width: 50, height: 50, marginRight:20 }} />}
+            <Pressable onPress={pickImage}>
+                <Text style={Theme.fonts.descriptionBlue}>{image? "Cambiar":"Agregar Recibo/Factura" }</Text>
+            </Pressable>
+            
+                {image && <AntDesign name="close" size={24} color={Theme.colors.primary} onPress={()=> setImage(null)} />}
+                </View> */}
+                
+                    <View style={{marginBottom:10, flexDirection:'row'}}>
+                    <Text style={[Theme.fonts.descriptionGray, { fontSize:18}]}>Mas opciones</Text>
+                        <AntDesign name="caretdown" size={20} color="black" />
+                    </View>
+                
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={Theme.buttons.primary}
               onPress={() => setModalVisible2(false)}
             >
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <Text style={Theme.fonts.titleWhite}>Hide Modal</Text>
             </Pressable>
           </View>
         </View>
@@ -95,7 +115,6 @@ const styles = StyleSheet.create({
     centeredView: {
       flex: 1,
       justifyContent: "center",
-      marginTop: 22,
       backgroundColor:'rgba(0,0,0,0.5)'
     },
     modalView: {

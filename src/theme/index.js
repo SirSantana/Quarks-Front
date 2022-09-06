@@ -22,17 +22,17 @@ export const Theme = {
       color: "#f50057",
     },
     description: {
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: "400",
       color: "white",
     },
     descriptionBlue: {
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: "500",
       color: "#1b333d",
     },
     descriptionGray: {
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: "400",
       color: "gray",
     },
