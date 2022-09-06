@@ -12,7 +12,7 @@ export const Theme = {
       color: "white",
     },
     titleBlue: {
-      fontSize: 24,
+      fontSize: 20,
       fontWeight: "700",
       color: "#1b333d",
     },

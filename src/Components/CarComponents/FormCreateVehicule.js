@@ -1,5 +1,5 @@
 import { View, Text,FlatList, TextInput, Modal, Image,StyleSheet, Pressable, Alert, SafeAreaView, StatusBar, Dimensions  } from "react-native";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useLayoutEffect, useState} from "react";
 import { marcasCarros } from "./marcasCarros";
 import { Theme } from "../../theme";
 import { Avatar, Divider, Button } from "react-native-paper";
@@ -48,10 +48,9 @@ export default function FormCreateVehicule({ route }) {
   const [form, setForm] = useState(initialForm)
     const [image, setImage] = useState(null);
     const navigation = useNavigation()
-  const { tipo } = route.params;
+  const { tipo, itemData } = route.params;
   const [marca, setMarca] = useState(null)
   const { width,height } = Dimensions.get('window');
-
   const [createVehicule, {data, error, loading}] = useMutation(CREATE_CAR, {refetchQueries:[{query:GET_VEHICLES}]})
   const {user} = useAuth()
   const pickImage = async () => {
@@ -83,8 +82,14 @@ export default function FormCreateVehicule({ route }) {
     Alert.alert('ERROR', error?.message)
 
   }
+  useLayoutEffect(()=>{
+      navigation.setOptions({
+        title:itemData ? 'Editar mi Vehiculo': 'Crear Vehiculo'
+      })
+  },[])
 
   const renderItem=(item)=>{
+    console.log(item);
         return(
             <Pressable onPressIn={()=>handleChange(item.marca)} style={{width:60, height:60, margin:10, backgroundColor:marca === item.marca ? '#1b333d': 'white',justifyContent:'center', alignItems:'center', borderRadius:10}}>
         <Image style={{width:40, height:40}} source={item.src}/>
@@ -109,14 +114,13 @@ export default function FormCreateVehicule({ route }) {
           setForm({...form, tipo:tipo})
 
         },[])
-        const [modalVisible, setModalVisible] = useState(false);
   return (
     <KeyboardAwareScrollView 
     resetScrollToCoords={{ x: 0, y: 0 }}
         keyboardShouldPersistTaps= 'always'
         style= {{ flex:1 }}>
     <SafeAreaView style={Theme.containers.containerParent}>
-         <Modal
+         {/* <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -136,19 +140,17 @@ export default function FormCreateVehicule({ route }) {
             </Pressable>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
 
-
-      
-      <Pressable
+      {/* <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}
       >
         <Text style={styles.textStyle}>Show Modal</Text>
-      </Pressable>
+      </Pressable> */}
 
       <View style={{width:'100%', padding:20,}}>
-      <Text style={Theme.fonts.titleBig}>Completa los datos de tu vehiculo</Text>
+      <Text style={Theme.fonts.titleBig}>{itemData ? "Edita tu vehiculo":'Completa los datos'}</Text>
       
       <Text style={[Theme.fonts.descriptionGray,{marginTop:10}]}>Selecciona la marca</Text>
 
@@ -169,7 +171,7 @@ export default function FormCreateVehicule({ route }) {
       <Text style={Theme.fonts.descriptionGray}>Referencia</Text>
       
       <TextInput
-            placeholder={tipo === 'Carro' ? 'Aveo': 'Mt-03'}
+            placeholder={itemData ?  itemData.marca : tipo === 'Carro' ? 'Aveo': 'Mt-03' }
             onChangeText={(text)=> setForm({...form, referencia:text})}
             style={Theme.input.basic}
             />
@@ -177,7 +179,7 @@ export default function FormCreateVehicule({ route }) {
       <Text style={Theme.fonts.descriptionGray}>Modelo</Text>
 
             <TextInput
-            placeholder='2008'
+            placeholder={itemData&& itemData.modelo}
             onChangeText={(text)=> setForm({...form, modelo:text})}
 
             style={Theme.input.basic}
@@ -186,22 +188,26 @@ export default function FormCreateVehicule({ route }) {
 
             <TextInput
             onChangeText={(text)=> setForm({...form, cilindraje:text})}
-            placeholder={tipo === 'Carro' ? '1400': '300'}
+            placeholder={itemData&& itemData.cilindraje}
             style={Theme.input.basic}
             />
 
 
-           <View style={{flexDirection:'row'}}>
-           <TouchableHighlight
+           <View style={{flexDirection:'row', alignItems:'center'}}>
+           {itemData.imagen &&!image && <Image source={{uri:'data:image/png;base64,'+ itemData?.imagen}} style={{ width: 50, height: 50 }} />}
+
+           <Pressable
             onPress={()=> alert('Hola')}
             underlayColor={'rgba(0,0,0,0)'}
             >
                 {image && <Image source={{ uri: image }} style={{ width: 50, height: 50 }} />}
-            </TouchableHighlight>
+
+            </Pressable>
             <Pressable onPress={pickImage} style={{width:'50%'}}>
-                <Text style={{color:'#f50057', fontSize:18, fontWeight:"600"}}>{image? "Cambiar Imagen":"Agregar Imagen" }</Text>
+                <Text style={{color:'#f50057', fontSize:18, fontWeight:"600", marginLeft:10}}>{image || itemData.imagen? "Cambiar Imagen":"Agregar Imagen" }</Text>
             </Pressable>
            </View>
+
            <View style={{flexDirection:'row', marginTop:20, width:'100%', justifyContent:'space-between'}}>
            <Pressable disabled={form== initialForm ? true: false} onPress={handleSubmit} style={[Theme.buttons.primary,{width:'100%', backgroundColor:form== initialForm ? 'gray': Theme.colors.primary}]}>
                 <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Guardar Auto</Text>

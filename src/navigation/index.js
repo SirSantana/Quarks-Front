@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import { Image } from 'react-native';
 import { Foundation } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {CarScreen} from '../Screens/Car/CarScreen'
@@ -28,8 +29,8 @@ export const Navigation=()=>{
     <NavigationContainer>
       <Tab.Navigator
         barStyle={{backgroundColor:'white'}} screenOptions={{ headerShown: false }}>
-        <Tab.Screen name="Home" component={StackHome} options={{tabBarIcon:({color})=><TabBarIcon color={color} name='home'/>}} />
         <Tab.Screen name="Gastos" component={StackCar} options={{tabBarIcon:({color})=><TabBarIcon color={color} name='car'/>}}/>
+        <Tab.Screen name="Home" component={StackHome} options={{tabBarIcon:({color})=><Image  style={{width:30, height:30}} source={require('../../assets/LogoQuarks1PNG.png')}/>}} />
         <Tab.Screen name="Profile" component={StackProfile} options={{tabBarIcon:({color})=><TabBarIcon color={color} name='user-alt'/>}}/>
       </Tab.Navigator>
     </NavigationContainer>

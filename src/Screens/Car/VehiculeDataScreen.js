@@ -1,52 +1,36 @@
-import { View, Text, Image, SafeAreaView, FlatList, Pressable,StyleSheet, Modal, Alert, Dimensions, } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, Image, Button, FlatList, Pressable,StyleSheet, Modal, Alert, Dimensions, } from 'react-native'
+import React, { useLayoutEffect, useState } from 'react'
 import { marcasCarros } from '../../Components/CarComponents/marcasCarros';
 import { Theme } from '../../theme';
-import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import ModalCreateGasto from '../../Components/CarComponents/ModalCreateGasto';
+import FormCreateVehicule from '../../Components/CarComponents/FormCreateVehicule';
 export default function VehiculeDataScreen({route}) {
   const navigation = useNavigation()
     const {item} = route.params
   const marca = marcasCarros.find(el=> el.marca === item.marca)
-  let tiposGastos = [
-    {tipo:'Lavada', icon:"local-car-wash"},
-    {tipo:'Tanqueada', icon:"fuel"},
-    {tipo:'Repuesto', icon:"car-wrench"},
-    {tipo:'Parqueadero', icon:"car-brake-parking"},
-    {tipo:'Mantenimiento', icon:"car-repair"},
 
-]
-
-const [modalVisible, setModalVisible] = useState(false);
 const [modalVisible2, setModalVisible2] = useState(false);
-const [tipoGasto,setTipoGasto] = useState(null)
 const {height} = Dimensions.get('window')
 
 
-  function Render(item){
-    const press=()=>{
-      setTipoGasto(item.icon)
-      setModalVisible(false)
-      setModalVisible2(true)
+  useLayoutEffect(()=>{
+    if(item){
+      navigation.setOptions({
+        headerRight:()=>(
+          <Button
+          onPress={()=> navigation.navigate('Creando mi Vehiculo',{tipo:item.tipo, itemData:item})}
+          title='Editar'
+          />
+        ),
+        title:item.marca +" "+ item.referencia
+      })
+      
     }
-   
-    return(
-      <Pressable onPress={()=>press()} style={{ height:100, margin:10, backgroundColor:"#464646",justifyContent:'center', alignItems:'center', borderRadius:10}}>
-          {/* <Image style={{width:40, height:40}} source={item.src}/> */}
-          
-          {item.icon === 'fuel' || item.icon === 'car-brake-parking' || item.icon === "car-wrench"?
-           <MaterialCommunityIcons name={item.icon} size={40} color="white" />
-          : <MaterialIcons name={item.icon} size={40} color="white" />}
-          
-          <Text style={Theme.fonts.description}>{item.tipo}</Text>
-          </Pressable>
-    )
-  }
+  },[])
 
   
   return (
@@ -65,7 +49,6 @@ const {height} = Dimensions.get('window')
             right:-50,
             width: width,
             height: 200}} source={require('../../../assets/carroBlanco.png')}/>}
-        <AntDesign onPress={()=> navigation.goBack()} name="left" size={35} color="white"  style={{position:'absolute', top:40, left:10}}/>
           
           
           <View style={{margin:20, flexDirection:'row', alignItems:'center',}}>
@@ -125,7 +108,7 @@ const {height} = Dimensions.get('window')
                 </View> 
 
             </View>
-            <Pressable style={Theme.buttons.primary} onPress={()=> setModalVisible(true)}>
+            <Pressable style={Theme.buttons.primary} onPress={()=> setModalVisible2(true)}>
             <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Agregar Gasto</Text>
 
             </Pressable>
@@ -134,38 +117,14 @@ const {height} = Dimensions.get('window')
 
             
             
-          <Modal
-        animationType="fade"
-        transparent={true}
-            style={{backgroundColor:'rgba(0,0,0,0.5)'}}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Pressable onPress={()=> setModalVisible(false)} style={{flexDirection:'row', alignItems:'center', marginTop:20, justifyContent:'space-between'}}>
-          <Text style={Theme.fonts.titleWhite}>Selecciona un Tipo</Text>
-          <Image    style={{width:40, height:40, marginLeft:10, transform: [{rotate: '180deg'}]}} source={require('../../../assets/iconTriangule.png')}/>
-            </Pressable>
-          <FlatList
-            horizontal
-            style={{width:'100%'}}
-            renderItem={({ item })=> Render(item) }
-            data={tiposGastos}
-            />
-          </View>
-          </View>
-        
-      </Modal>
+          
             
       <Modal
         animationType="fade"
         transparent={true}
         visible={modalVisible2}
       >
-          <ModalCreateGasto tipoGasto={tipoGasto} setModalVisible2={setModalVisible2}/>
+          <ModalCreateGasto setModalVisible2={setModalVisible2}/>
       </Modal>
 
     </View>
