@@ -10,11 +10,11 @@ import ModalCreateGasto from '../../Components/CarComponents/ModalCreateGasto';
 import FormCreateVehicule from '../../Components/CarComponents/FormCreateVehicule';
 export default function VehiculeDataScreen({route}) {
   const navigation = useNavigation()
-    const {item} = route.params
-  const marca = marcasCarros.find(el=> el.marca === item.marca)
+    const item = route?.params?.item
+  const marca = marcasCarros.find(el=> el.marca === item?.marca)
 
 const [modalVisible2, setModalVisible2] = useState(false);
-const {height} = Dimensions.get('window')
+const {height, width} = Dimensions.get('window')
 
 
   useLayoutEffect(()=>{
@@ -22,7 +22,7 @@ const {height} = Dimensions.get('window')
       navigation.setOptions({
         headerRight:()=>(
           <Button
-          onPress={()=> navigation.navigate('Creando mi Vehiculo',{tipo:item.tipo, itemData:item})}
+          onPress={()=> navigation.navigate('Creando mi Vehiculo',{tipo:item?.tipo, itemData:item})}
           title='Editar'
           />
         ),

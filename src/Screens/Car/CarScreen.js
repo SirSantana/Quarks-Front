@@ -37,7 +37,7 @@ export const CarScreen=({route}) =>{
       return navigation.navigate('Profile')
     }
   }
-  const {height} = Dimensions.get('window')
+  
   return (
     <SafeAreaView style={[Theme.containers.containerParent,]}>
         

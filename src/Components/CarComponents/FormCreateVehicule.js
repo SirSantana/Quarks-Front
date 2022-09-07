@@ -25,13 +25,18 @@ mutation createCar($marca:String, $tipo:String, $referencia:String, $modelo:Stri
   }
 }
 `
-const GET_ALL_USERS = gql`
-  query getAllUsers{
-     getAllUsers{
-      name 
-      email
-    }
+const UPDATE_CAR = gql`
+mutation updateCar($marca:String, $tipo:String, $referencia:String, $modelo:String, $cilindraje:String, $user:ID, $imagen:String, $id:ID) {
+  updateCar(input: {marca:$marca, tipo:$tipo, referencia:$referencia,modelo:$modelo, cilindraje:$cilindraje, user:$user, imagen:$imagen, id:$id}) {
+    tipo
+    referencia
+    modelo
+    cilindraje
+    marca
+    imagen
+    id
   }
+}
 `
 
 const initialForm ={
@@ -41,7 +46,8 @@ const initialForm ={
   tipo:'',
   cilindraje:'',
   imagen:'',
-  user:''
+  user:'',
+  id:''
 }
   
 export default function FormCreateVehicule({ route }) {
@@ -52,7 +58,8 @@ export default function FormCreateVehicule({ route }) {
   const [marca, setMarca] = useState(null)
   const { width,height } = Dimensions.get('window');
   const [createVehicule, {data, error, loading}] = useMutation(CREATE_CAR, {refetchQueries:[{query:GET_VEHICLES}]})
-  const {user} = useAuth()
+  const [updateCar, result] = useMutation(UPDATE_CAR)
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -68,11 +75,27 @@ export default function FormCreateVehicule({ route }) {
       setForm({...form, imagen:result.base64})
     }
   };
-
   const handleSubmit=()=>{
-      setForm({...form})
-    createVehicule({variables:form})
+      if(itemData){
+        setForm({...form, id:itemData.id})
+        for (let property in form) {
+     
+          if(form[property].length === 0 && property !== "id"){
+              delete form[property]
+        }
+      }
+      updateCar({variables:{...form, id:itemData.id}})
+      setForm(initialForm)
+      }else{
+        // createVehicule({variables:form})
+      }
   }
+  useEffect(()=>{
+    if(result?.data){
+      navigation.navigate('Vehiculo', {item: result?.data?.updateCar})
+    }
+  },[result?.data])
+  
   const handleChange=(itemMarca)=>{
     setForm({...form, marca:itemMarca})
 
@@ -89,7 +112,6 @@ export default function FormCreateVehicule({ route }) {
   },[])
 
   const renderItem=(item)=>{
-    console.log(item);
         return(
             <Pressable onPressIn={()=>handleChange(item.marca)} style={{width:60, height:60, margin:10, backgroundColor:marca === item.marca ? '#1b333d': 'white',justifyContent:'center', alignItems:'center', borderRadius:10}}>
         <Image style={{width:40, height:40}} source={item.src}/>
@@ -171,7 +193,7 @@ export default function FormCreateVehicule({ route }) {
       <Text style={Theme.fonts.descriptionGray}>Referencia</Text>
       
       <TextInput
-            placeholder={itemData ?  itemData.marca : tipo === 'Carro' ? 'Aveo': 'Mt-03' }
+            placeholder={itemData ?  itemData?.marca : tipo === 'Carro' ? 'Aveo': 'Mt-03' }
             onChangeText={(text)=> setForm({...form, referencia:text})}
             style={Theme.input.basic}
             />
@@ -179,7 +201,7 @@ export default function FormCreateVehicule({ route }) {
       <Text style={Theme.fonts.descriptionGray}>Modelo</Text>
 
             <TextInput
-            placeholder={itemData&& itemData.modelo}
+            placeholder={itemData&& itemData?.modelo}
             onChangeText={(text)=> setForm({...form, modelo:text})}
 
             style={Theme.input.basic}
@@ -188,13 +210,13 @@ export default function FormCreateVehicule({ route }) {
 
             <TextInput
             onChangeText={(text)=> setForm({...form, cilindraje:text})}
-            placeholder={itemData&& itemData.cilindraje}
+            placeholder={itemData&& itemData?.cilindraje}
             style={Theme.input.basic}
             />
 
 
            <View style={{flexDirection:'row', alignItems:'center'}}>
-           {itemData.imagen &&!image && <Image source={{uri:'data:image/png;base64,'+ itemData?.imagen}} style={{ width: 50, height: 50 }} />}
+           {itemData?.imagen &&!image && <Image source={{uri:'data:image/png;base64,'+ itemData?.imagen}} style={{ width: 50, height: 50 }} />}
 
            <Pressable
             onPress={()=> alert('Hola')}
@@ -204,14 +226,14 @@ export default function FormCreateVehicule({ route }) {
 
             </Pressable>
             <Pressable onPress={pickImage} style={{width:'50%'}}>
-                <Text style={{color:'#f50057', fontSize:18, fontWeight:"600", marginLeft:10}}>{image || itemData.imagen? "Cambiar Imagen":"Agregar Imagen" }</Text>
+                <Text style={{color:'#f50057', fontSize:18, fontWeight:"600", marginLeft:10}}>{image || itemData?.imagen? "Cambiar Imagen":"Agregar Imagen" }</Text>
             </Pressable>
            </View>
 
            <View style={{flexDirection:'row', marginTop:20, width:'100%', justifyContent:'space-between'}}>
-           <Pressable disabled={form== initialForm ? true: false} onPress={handleSubmit} style={[Theme.buttons.primary,{width:'100%', backgroundColor:form== initialForm ? 'gray': Theme.colors.primary}]}>
-                <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Guardar Auto</Text>
-            </Pressable>
+            <Pressable disabled={form== initialForm ? true: false || result?.loading || loading} onPress={handleSubmit} style={[Theme.buttons.primary,{width:'100%', backgroundColor:form== initialForm ? 'gray': Theme.colors.primary}]}>
+            <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>{itemData ? 'Guardar Cambios':'Guardar Auto'}</Text>
+        </Pressable>
            </View>
       </View>
       
