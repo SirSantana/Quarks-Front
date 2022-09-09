@@ -12,6 +12,7 @@ import useAuth from "../../hooks/useAuth";
 import { GET_VEHICLES } from "../../Screens/Car/CarScreen";
 import * as ImagePicker from 'expo-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import ModalCargando from "../../utils/ModalCargando";
 const CREATE_CAR = gql`
 mutation createCar($marca:String, $tipo:String, $referencia:String, $modelo:String, $cilindraje:String, $user:ID, $imagen:String) {
   createCar(input: {marca:$marca, tipo:$tipo, referencia:$referencia,modelo:$modelo, cilindraje:$cilindraje, user:$user, imagen:$imagen}) {
@@ -87,20 +88,17 @@ export default function FormCreateVehicule({ route }) {
       updateCar({variables:{...form, id:itemData.id}})
       setForm(initialForm)
       }else{
-        // createVehicule({variables:form})
+        createVehicule({variables:form})
       }
   }
-  useEffect(()=>{
-    if(result?.data){
-      navigation.navigate('Vehiculo', {item: result?.data?.updateCar})
-    }
-  },[result?.data])
+ 
   
   const handleChange=(itemMarca)=>{
     setForm({...form, marca:itemMarca})
 
       setMarca(itemMarca)
   }
+ 
   if(error){
     Alert.alert('ERROR', error?.message)
 
@@ -110,7 +108,6 @@ export default function FormCreateVehicule({ route }) {
         title:itemData ? 'Editar mi Vehiculo': 'Crear Vehiculo'
       })
   },[])
-
   const renderItem=(item)=>{
         return(
             <Pressable onPressIn={()=>handleChange(item.marca)} style={{width:60, height:60, margin:10, backgroundColor:marca === item.marca ? '#1b333d': 'white',justifyContent:'center', alignItems:'center', borderRadius:10}}>
@@ -127,49 +124,43 @@ export default function FormCreateVehicule({ route }) {
         },[error])
         
         useEffect(()=>{
-          if(data){
-            console.log('te',data);
-            navigation.navigate('Mi Vehiculo',{data:data.createCar})
-          }
-        },[data])
-        useEffect(()=>{
           setForm({...form, tipo:tipo})
 
         },[])
+        useEffect(()=>{
+          if(result?.data){
+            navigation.navigate('Vehiculo', {item: result?.data?.updateCar})
+          }
+          if(data){
+            navigation.navigate('Mi Vehiculo',{data:data.createCar})
+          }
+        },[result?.data, data])
   return (
     <KeyboardAwareScrollView 
     resetScrollToCoords={{ x: 0, y: 0 }}
         keyboardShouldPersistTaps= 'always'
         style= {{ flex:1 }}>
     <SafeAreaView style={Theme.containers.containerParent}>
-         {/* <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal> */}
-
-      {/* <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.textStyle}>Show Modal</Text>
-      </Pressable> */}
+      {result?.loading &&
+      <Modal
+      style={{backgroundColor:'rgba(0,0,0,0.5)'}}
+      animationType="slide"
+      transparent={true}
+      visible={result?.loading}
+    >
+        <ModalCargando text={'Guardando Cambios...'}/>
+      </Modal>
+      }
+      {loading &&
+      <Modal
+      style={{backgroundColor:'rgba(0,0,0,0.5)'}}
+      animationType="slide"
+      transparent={true}
+      visible={loading}
+    >
+        <ModalCargando text={'Creando tu Vehiculo...'}/>
+      </Modal>
+      }
 
       <View style={{width:'100%', padding:20,}}>
       <Text style={Theme.fonts.titleBig}>{itemData ? "Edita tu vehiculo":'Completa los datos'}</Text>
@@ -243,55 +234,3 @@ export default function FormCreateVehicule({ route }) {
 
   );
 }
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 4,
-    // elevation: 5
-    // position: "absolute",
-    // bottom: 0,
-    // height: 250,
-    // width:'100%',
-    // borderTopLeftRadius: 20,
-    // justifyContent: "center",
-    // alignItems: "center",
-    // borderTopRightRadius: 20,
-    // backgroundColor: "white"
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center"
-  }
-});

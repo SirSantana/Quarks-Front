@@ -60,10 +60,10 @@ export const CarScreen=({route}) =>{
             shadowColor: "#000"
           },}}
         horizontal
-        renderItem={({ item })=><TouchableOpacity onPress={() =>  navigation.navigate('Vehiculo', {item:item})} >
-        <Vehiculo item={item}/>
-        
-    </TouchableOpacity>
+        renderItem={({ item })=>
+        <TouchableOpacity onPress={() =>  navigation.navigate('Vehiculo', {item:item})} >
+         <Vehiculo item={item}/>
+        </TouchableOpacity>
           
       }
         data={data?.getCars}

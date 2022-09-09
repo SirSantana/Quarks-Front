@@ -1,15 +1,45 @@
-import {View, Text, StyleSheet, Pressable,Image,Modal,FlatList,  TextInput, TouchableOpacity, } from 'react-native'
+import {View, Text, StyleSheet, Pressable,Image,Modal,FlatList,  TextInput, TouchableOpacity, Alert, Button, } from 'react-native'
 import { Theme } from '../../theme';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
-
+import { gql, useMutation, useQuery } from "@apollo/client";
+import * as FileSystem from 'expo-file-system'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { GET_GASTOS } from '../../Screens/Car/VehiculeDataScreen';
+import { GET_ALL_GASTOS } from '../../Screens/Car/GastosScreen';
+
+const CREATE_GASTO = gql`
+  mutation createGasto($dineroGastado:String, $tipo:String,$lugar:String, $description:String, $imagen:String, $fecha:Date, $carro:ID){
+    createGasto(input:{dineroGastado:$dineroGastado,tipo:$tipo,lugar:$lugar, description:$description, imagen:$imagen, fecha:$fecha, carro:$carro}){
+      tipo
+      dineroGastado
+      fecha
+      id
+      description
+      lugar
+      imagen
+    }
+  }
+`
+const UPDATE_GASTO = gql`
+  mutation updateGasto($dineroGastado:String, $tipo:String,$lugar:String, $description:String, $imagen:String, $fecha:Date, $carro:ID, $id:ID){
+    updateGasto(input:{dineroGastado:$dineroGastado,tipo:$tipo,lugar:$lugar, description:$description, imagen:$imagen, fecha:$fecha, carro:$carro, id:$id}){
+      tipo
+      dineroGastado
+      fecha
+      id
+      description
+      lugar
+      imagen
+    }
+  }
+`
 
 let tiposGastos = [
     {tipo:'Lavada', icon:"local-car-wash"},
@@ -24,18 +54,58 @@ let initialForm ={
     fecha:'',
     tipo:'',
     lugar:'',
-    foto:'',
-    description:''
+    imagen:'',
+    description:'',
+    carro:'',
+    id:''
 }
-export default function ModalCreateGasto({ setModalVisible2}){
-    const [selectedDate, setSelectedDate] = useState(new Date());
+export default function ModalCreateGasto({ setModalVisible2, id, item}){
+    const [selectedDate, setSelectedDate] = useState(item ? new Date(item.fecha):new Date());
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [form, setForm] = useState(initialForm)
     const [image, setImage] = useState(null);
     const [moreOptions, setMoreOptions] = useState(false)
-const [modalVisible, setModalVisible] = useState(false);
-const [tipoGasto,setTipoGasto] = useState("fuel")
-  
+    const [modalVisible, setModalVisible] = useState(false);
+    const [tipoGasto,setTipoGasto] = useState("fuel")
+    const [updateGasto, result] = useMutation(UPDATE_GASTO)
+
+    const [createGasto, {loading, error}] = useMutation(CREATE_GASTO,{
+      update(cache, {data}){
+    const {getPrevGastos} = cache.readQuery({
+      query:GET_GASTOS,
+      variables:{id:id}
+    })
+    const {getAllGastos} = cache.readQuery({
+      query:GET_ALL_GASTOS,
+      variables:{id:id}
+    })
+     cache.writeQuery({
+      query:GET_GASTOS,
+      variables:{id:id},
+      data:{
+        getPrevGastos:[...getPrevGastos,data.createGasto]
+      }
+    })
+    cache.writeQuery({
+      query:GET_ALL_GASTOS,
+      variables:{id:id},
+      data:{
+        getAllGastos:[...getAllGastos,data.createGasto]
+      }
+    })
+  }
+}
+)
+      const getFileInfo = async (fileURI) => {
+        const fileInfo = await FileSystem.getInfoAsync(fileURI)
+        return fileInfo
+      }
+
+      const isLessThanTheMB = (fileSize, smallerThanSizeMB) => {
+        const isOk = fileSize / 1024 / 1024 < smallerThanSizeMB
+        return isOk
+      }
+
     const showDatePicker = () => {
       setDatePickerVisible(true);
     };
@@ -46,6 +116,7 @@ const [tipoGasto,setTipoGasto] = useState("fuel")
   
     const handleConfirm = (date) => {
       setSelectedDate(date);
+      setForm({...form, fecha:date})
       hideDatePicker();
     };
     const pickImage = async () => {
@@ -57,16 +128,51 @@ const [tipoGasto,setTipoGasto] = useState("fuel")
           base64:true
         });
     
-    
+      const fileInfo = await getFileInfo(result.uri)
+
+      if (!fileInfo?.size) {
+        alert("Can't select this file as the size is unknown.")
+        return
+      }
         if (!result.cancelled) {
+          const isLt15MB = isLessThanTheMB(fileInfo.size, 2)
+          console.log('dannn',isLt15MB);
+            if (!isLt15MB) {
+              Alert.alert(`Elige una imagen con un tamaño inferior a 2MB!`)
+              return
+            }
           setImage(result.uri);
+          setForm({...form, imagen:result.base64})
         }
       };
-
+    const handleSubmit=()=>{
+      if(item){
+        for (let property in form) {
+     
+          if(form[property].length === 0 && property != "id"){
+              delete form[property]
+        }
+      }
+      setForm({...form, id:item.id})
+      updateGasto({variables:{...form, id:item.id}})
+      setForm(initialForm)
+      setModalVisible2(false)
+    }else{
+      createGasto({variables:{...form, carro:id}})
+      setModalVisible2(false)
+    }
+    
+    }
+    if(error){
+      Alert.alert(error)
+    }
+    
     function Render(item){
         const press=()=>{
           setTipoGasto(item.icon)
+          setForm({...form, tipo:item.tipo})
           setModalVisible(false)
+
         }
        
         return(
@@ -83,7 +189,7 @@ const [tipoGasto,setTipoGasto] = useState("fuel")
       }
     return(
         
-        <View style={styles.centeredView}>
+        <Pressable style={styles.centeredView}>
             <KeyboardAwareScrollView 
     resetScrollToCoords={{ x: 0, y: 0 }}
         keyboardShouldPersistTaps= 'always'
@@ -92,7 +198,7 @@ const [tipoGasto,setTipoGasto] = useState("fuel")
 
             <View style={{flexDirection:'row', justifyContent:'space-between', marginBottom:20}}>
             <View>
-            <Text style={Theme.fonts.titleBlue}>Añade tu {tiposGastos.map(el=> el.icon === tipoGasto && el.tipo)}</Text>
+            <Text style={Theme.fonts.titleBlue}>{item ? 'Edita': 'Añade'} tu {tiposGastos.map(el=> el.icon === tipoGasto && el.tipo)}</Text>
             <Text style={[Theme.fonts.descriptionGray,{lineHeight:18}]}>Completa los datos</Text>
             </View>
             {tipoGasto === 'fuel' || tipoGasto === 'car-brake-parking' || tipoGasto === "car-wrench"?
@@ -132,7 +238,7 @@ const [tipoGasto,setTipoGasto] = useState("fuel")
             <Text style={Theme.fonts.descriptionGray}>Dinero Gastado</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:50, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:10}}>
             <MaterialIcons name="attach-money" size={30} color="black" />
-            <TextInput style={[Theme.fonts.descriptionGray,{width:'90%'}]} onChangeText={(text)=> setForm({...form, dineroGastado:text})} />
+            <TextInput  placeholder={item?.dineroGastado} style={[Theme.fonts.descriptionGray,{width:'90%'}]} onChangeText={(text)=> setForm({...form, dineroGastado:text})} />
             </Pressable>
 
                 
@@ -146,10 +252,12 @@ const [tipoGasto,setTipoGasto] = useState("fuel")
             {moreOptions &&
             <>
             <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between',marginBottom:10}}>
+            {item?.imagen &&!image && <Image source={{uri:'data:image/png;base64,'+ item?.imagen}} style={{ width: 50, height: 50 }} />}
+
             {image ? <Image source={{ uri: image }} style={{ width: 50, height: 50, marginRight:20 }} />
             : <MaterialIcons name="photo-camera" size={24} color="#1b333d" style={{marginLeft:10}} />}
         <Pressable onPress={pickImage}>
-            <Text style={Theme.fonts.descriptionBlue}>{image? "Cambiar":"Agregar Recibo/Factura" }</Text>
+            <Text style={Theme.fonts.descriptionBlue}>{image || item?.imagen? "Cambiar":"Agregar Recibo/Factura" }</Text>
         </Pressable>
         
             {image && <AntDesign name="close" size={24} color={Theme.colors.primary} onPress={()=> setImage(null)} />}
@@ -158,13 +266,13 @@ const [tipoGasto,setTipoGasto] = useState("fuel")
             <Text style={Theme.fonts.descriptionGray}>Tienda</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:50, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:10}}>
             <FontAwesome5 name="store" size={20} color="#1b333d" style={{marginLeft:5}}/>
-            <TextInput multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]} onChangeText={(text)=> setForm({...form, description:text})} />
+            <TextInput placeholder={item?.lugar} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]} onChangeText={(text)=> setForm({...form, lugar:text})} />
             </Pressable>
 
             <Text style={Theme.fonts.descriptionGray}>Descripcion</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:80, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:20}}>
             <AntDesign name="filetext1" size={24} color="#1b333d" style={{marginLeft:5}}/>
-            <TextInput multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]} onChangeText={(text)=> setForm({...form, description:text})} />
+            <TextInput placeholder={item.description} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]} onChangeText={(text)=> setForm({...form, description:text})} />
             </Pressable>
             </>
 
@@ -173,16 +281,20 @@ const [tipoGasto,setTipoGasto] = useState("fuel")
             
 
             <Pressable
-              style={Theme.buttons.primary}
-              onPress={() => setModalVisible2(false)}
+           disabled={form.dineroGastado === initialForm.dineroGastado ? true:false || loading && true}
+              style={[Theme.buttons.primary,{width:'100%', backgroundColor:form.dineroGastado === initialForm.dineroGastado? 'gray': Theme.colors.primary}]}
+              onPress={handleSubmit}
             >
-              <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Hide Modal</Text>
+              <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>{item?'Editar Gasto':'Confirmar Gasto'}</Text>
             </Pressable>
+
+            <Button onPress={()=> setModalVisible2(false)} title='Cancelar'/>
+
 
             <Modal
         animationType="fade"
         transparent={true}
-            style={{backgroundColor:'rgba(0,0,0,0.5)'}}
+        style={{backgroundColor:'rgba(0,0,0,0.5)'}}
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
@@ -209,7 +321,7 @@ const [tipoGasto,setTipoGasto] = useState("fuel")
           </View>
         </KeyboardAwareScrollView>
 
-        </View>
+        </Pressable>
     )
 }
 

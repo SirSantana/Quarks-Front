@@ -1,11 +1,14 @@
 import { marcasCarros } from './marcasCarros'
 import { View, Text,FlatList, TextInput, TouchableOpacity, Image, Pressable, Alert, SafeAreaView, StatusBar, Dimensions  } from "react-native";
 import { Theme } from '../../theme';
+import { marcasMotos } from './marcasMotos';
 
 
 export default function Vehiculo({item}){
   const { width,height } = Dimensions.get('window');
   const marca = marcasCarros.find(el=> el.marca === item.marca)
+  const marcaMoto = marcasMotos.find(el=> el.marca === item?.marca)
+
     return(
         <View style={{backgroundColor:"white", width:300, borderRadius:20, marginRight:20,height:"90%",maxHeight:350}}>
           <View style={{height: '100%',
@@ -35,7 +38,7 @@ export default function Vehiculo({item}){
             {/* <Text style={{fontSize:24, color:Theme.colors.secondary, fontWeight:'500', lineHeight:28}}>{item.referencia}</Text> */}
             </View>
             
-            <Image  style={{height: 50, width:50}} source={marca?.src}/>
+            <Image  style={{height: 50, width:50}} source={item.tipo === 'Carro' ? marca?.src: marcaMoto?.src}/>
 
             </View>
             {/* <Text style={Theme.fonts.descriptionBlue}>{item.modelo}</Text> */}

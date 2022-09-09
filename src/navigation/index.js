@@ -12,6 +12,8 @@ import { HomeScreen } from '../Screens/Home/HomeScreen';
 import { ProfileScreen } from '../Screens/Profile/ProfileScreen';
 import FormCreateVehicule from '../Components/CarComponents/FormCreateVehicule';
 import VehiculeDataScreen from '../Screens/Car/VehiculeDataScreen';
+import AllGastos from '../Components/Gastos/AllGastos';
+import GastosScreen from '../Screens/Car/GastosScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -29,7 +31,7 @@ export const Navigation=()=>{
     <NavigationContainer>
       <Tab.Navigator
         barStyle={{backgroundColor:'white'}} screenOptions={{ headerShown: false }}>
-        <Tab.Screen name="Gastos" component={StackCar} options={{tabBarIcon:({color})=><TabBarIcon color={color} name='car'/>}}/>
+        <Tab.Screen name="Car" component={StackCar} options={{tabBarIcon:({color})=><TabBarIcon color={color} name='car'/>}}/>
         <Tab.Screen name="Home" component={StackHome} options={{tabBarIcon:({color})=><Image  style={{width:30, height:30}} source={require('../../assets/LogoQuarks1PNG.png')}/>}} />
         <Tab.Screen name="Profile" component={StackProfile} options={{tabBarIcon:({color})=><TabBarIcon color={color} name='user-alt'/>}}/>
       </Tab.Navigator>
@@ -77,6 +79,8 @@ function StackProfile() {
         <Stack.Screen name="Mi Vehiculo" component={CarScreen} options={{headerShown:false}}/>
         <Stack.Screen name="Creando mi Vehiculo" component={FormCreateVehicule}  />
         <Stack.Screen name="Vehiculo" component={VehiculeDataScreen}  />
+        <Stack.Screen name="Gastos" component={GastosScreen}  />
+
         </Stack.Navigator>
       );
     }

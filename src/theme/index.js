@@ -31,6 +31,11 @@ export const Theme = {
       fontWeight: "500",
       color: "#1b333d",
     },
+    descriptionRed: {
+      fontSize: 16,
+      fontWeight: "500",
+      color: "#f50057",
+    },
     descriptionGray: {
       fontSize: 16,
       fontWeight: "400",
