@@ -8,6 +8,7 @@ import { useLayoutEffect, useState } from "react";
 import { Feather } from '@expo/vector-icons';
 import { Modal } from "react-native-paper";
 import ModalCreateGasto from "../CarComponents/ModalCreateGasto";
+import ModalCargando from "../../utils/ModalCargando";
 export const GET_ONE_GASTO = gql`
   query getOneGasto($id:ID){
     getOneGasto(id:$id){
@@ -23,7 +24,6 @@ export const GET_ONE_GASTO = gql`
 `
 
 export default function ModalDetailsGasto({id, setModalVisible}){
-
     const [getOne, {loading, data, error}] = useLazyQuery(GET_ONE_GASTO)
     const [modalVisible2, setModalVisible2] = useState(false)
     useLayoutEffect(()=>{
@@ -114,6 +114,15 @@ export default function ModalDetailsGasto({id, setModalVisible}){
          >
              <ModalCreateGasto setModalVisible2={setModalVisible2} id={id} item={getOneGasto}/>
          </Modal>
+         {loading &&
+         <Modal
+         animationType="fade"
+         transparent={true}
+         visible={loading}
+       >
+          <ModalCargando text={'Cargando Datos...'}/>
+       </Modal>
+         }
          </>
     )
 }

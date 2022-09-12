@@ -55,7 +55,7 @@ const {height, width} = Dimensions.get('window')
     resetScrollToCoords={{ x: 0, y: 0 }}
         keyboardShouldPersistTaps= 'always'
         style= {{ flex:1, height:'100%' }}>
-        <View style={{backgroundColor:'white',height:height,}}>
+        <View style={{backgroundColor:'white',height:height,marginBottom:'10%'}}>
          
           {item?.imagen
            ?<Image   style={{

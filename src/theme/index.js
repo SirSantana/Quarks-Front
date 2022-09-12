@@ -89,6 +89,14 @@ export const Theme = {
       height: "100%",
       backgroundColor: "#f1f1fb",
     },
+    containerTiempo: {
+      margin: 0,
+      width: "30%",
+      height: 30,
+      borderRadius: 10,
+      alignItems: "center",
+      justifyContent: "center",
+    },
     containerFlex: {
       justifyContent: "center",
       alignItems: "center",
@@ -108,7 +116,7 @@ export const Theme = {
       justifyContent: "center",
       alignItems: "center",
       borderRadius: 10,
-      backgroundColor:"#f50057"
+      backgroundColor: "#f50057",
     },
   },
   input: {

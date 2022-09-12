@@ -272,7 +272,7 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
             <Text style={Theme.fonts.descriptionGray}>Descripcion</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:80, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:20}}>
             <AntDesign name="filetext1" size={24} color="#1b333d" style={{marginLeft:5}}/>
-            <TextInput placeholder={item.description} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]} onChangeText={(text)=> setForm({...form, description:text})} />
+            <TextInput placeholder={item?.description} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]} onChangeText={(text)=> setForm({...form, description:text})} />
             </Pressable>
             </>
 
