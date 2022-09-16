@@ -7,16 +7,15 @@ import GastosIndividuales from './GastosIndividuales';
 import ModalDetailsGasto from './ModalDetailsGasto';
 
 
-export default function MesGastos({data}){
+export default function MesGastos({data, month}){
     const [modalVisible, setModalVisible] = useState(false)
     const [idItem,setIdItem] = useState(null)
-
-        console.log(idItem);
+    const [collapse, setCollapse] = useState(month ? true: false)
     let meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
     let tipoGastos = ['Mantenimiento', 'Parqueadero', 'Tanqueada', 'Repuestos', 'Lavada']
     let mesActual;
     if(data.length >0){
-       mesActual = new Date(data[0]?.fecha).getMonth()
+       mesActual = month || new Date(data[0]?.fecha).getMonth()
     }
     let tipos = {
         Mantenimiento:[],
@@ -36,26 +35,34 @@ export default function MesGastos({data}){
       }
     
       
-
     return(
         
-        <View style={{justifyContent:'center', height:'100%'}}>
-            <View style={{backgroundColor:'white', borderRadius:10,marginBottom:20, padding:10, justifyContent:'center', width:'100%'}}>
+        <View style={{justifyContent:'center', height:month ? null: "100%"}}>
+            <Pressable onPress={()=> setCollapse(collapse ? false: true)} style={{backgroundColor:Theme.colors.primary, borderRadius:10,marginBottom:20, padding:10, justifyContent:'center', width:'100%'}}>
                 <View>
-                <Text style={Theme.fonts.descriptionBlue}>{meses[mesActual]}</Text>
+                <Text style={Theme.fonts.description}>{meses[mesActual]}</Text>
                 <View>
                 </View>
-                <Text style={[Theme.fonts.titleRed, {fontSize:30}]}>$ {totalDineroGastado.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</Text>
+                <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
+                <Text style={[Theme.fonts.titleWhite, {fontSize:30}]}>$ {totalDineroGastado.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</Text>
+                <Text style={Theme.fonts.description}>{collapse ?"Ver Detalle": "Cerrar Detalle"}</Text>
                 </View>
-            </View>
+                
+                </View>
+            </Pressable>
+            {collapse 
+            ? null
+            : <>
             <Text style={Theme.fonts.descriptionBlue}>Detalle</Text>
-
             <GastosIndividuales tipos={tipos} setIdItem={setIdItem} setModalVisible={setModalVisible}/>
+            
+            </>}
+            
 
             <Modal
         animationType="fade"
         transparent={true}
-        visible={modalVisible}
+        visible={modalVisible} 
         onRequestClose={() => {
             setModalVisible(!modalVisible);
           }}

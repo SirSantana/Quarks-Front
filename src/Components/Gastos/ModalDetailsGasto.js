@@ -1,12 +1,11 @@
-import { View, StyleSheet, Text, Pressable, Image, Button} from "react-native";
+import { View, StyleSheet, Text, Pressable, Image, Button, Modal} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from "../../theme";
 import { gql, useLazyQuery } from "@apollo/client";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState, useEffect } from "react";
 import { Feather } from '@expo/vector-icons';
-import { Modal } from "react-native-paper";
 import ModalCreateGasto from "../CarComponents/ModalCreateGasto";
 import ModalCargando from "../../utils/ModalCargando";
 export const GET_ONE_GASTO = gql`
@@ -46,10 +45,11 @@ export default function ModalDetailsGasto({id, setModalVisible}){
     const handleEdit=()=>{
       setModalVisible2(true)
     }
-  
+    
 
     return(
       <>
+        
         <Pressable onPress={()=> setModalVisible(false)}  style={styles.centeredView}>
               <View style={styles.modalView}>
                {getOneGasto &&
@@ -114,15 +114,6 @@ export default function ModalDetailsGasto({id, setModalVisible}){
          >
              <ModalCreateGasto setModalVisible2={setModalVisible2} id={id} item={getOneGasto}/>
          </Modal>
-         {loading &&
-         <Modal
-         animationType="fade"
-         transparent={true}
-         visible={loading}
-       >
-          <ModalCargando text={'Cargando Datos...'}/>
-       </Modal>
-         }
          </>
     )
 }

@@ -13,6 +13,7 @@ import * as FileSystem from 'expo-file-system'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { GET_GASTOS } from '../../Screens/Car/VehiculeDataScreen';
 import { GET_ALL_GASTOS } from '../../Screens/Car/GastosScreen';
+import ModalCargando from '../../utils/ModalCargando';
 
 const CREATE_GASTO = gql`
   mutation createGasto($dineroGastado:String, $tipo:String,$lugar:String, $description:String, $imagen:String, $fecha:Date, $carro:ID){
@@ -69,7 +70,7 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
     const [tipoGasto,setTipoGasto] = useState("fuel")
     const [updateGasto, result] = useMutation(UPDATE_GASTO)
 
-    const [createGasto, {loading, error}] = useMutation(CREATE_GASTO,{
+    const [createGasto, {loading, error, data}] = useMutation(CREATE_GASTO,{
       update(cache, {data}){
     const {getPrevGastos} = cache.readQuery({
       query:GET_GASTOS,
@@ -96,6 +97,8 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
   }
 }
 )
+
+  
       const getFileInfo = async (fileURI) => {
         const fileInfo = await FileSystem.getInfoAsync(fileURI)
         return fileInfo
@@ -156,17 +159,20 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
       setForm({...form, id:item.id})
       updateGasto({variables:{...form, id:item.id}})
       setForm(initialForm)
-      setModalVisible2(false)
     }else{
       createGasto({variables:{...form, carro:id}})
-      setModalVisible2(false)
+
     }
     
     }
+    
     if(error){
       Alert.alert(error)
     }
-    
+    if(data || result?.data){
+      return setModalVisible2(false)
+    }
+    console.log(result.loading);
     function Render(item){
         const press=()=>{
           setTipoGasto(item.icon)
@@ -188,8 +194,19 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
         )
       }
     return(
-        
+      <>
+      {loading || result?.loading &&
+        <Modal
+        animationType="fade"
+        visible={loading}
+        transparent={true}
+
+      >
+         <ModalCargando text={'Guardando Datos'}/>
+      </Modal>
+        }
         <Pressable style={styles.centeredView}>
+          
             <KeyboardAwareScrollView 
     resetScrollToCoords={{ x: 0, y: 0 }}
         keyboardShouldPersistTaps= 'always'
@@ -320,8 +337,10 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
       </Modal>
           </View>
         </KeyboardAwareScrollView>
-
+        
         </Pressable>
+      </>
+
     )
 }
 

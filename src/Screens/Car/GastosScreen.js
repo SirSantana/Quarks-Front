@@ -1,10 +1,11 @@
 import AllGastos from "../../Components/Gastos/AllGastos";
-import {Text, View, Pressable} from 'react-native'
+import {Text, View, Pressable, Modal} from 'react-native'
 import { gql, useLazyQuery } from "@apollo/client";
 import { useLayoutEffect, useState } from "react";
 import ModalCargando from "../../utils/ModalCargando";
 import { Theme } from "../../theme";
 import MesGastos from "../../Components/Gastos/MesGastos";
+import AñoGastos from "../../Components/Gastos/AñoGastos";
 
 export const GET_ALL_GASTOS = gql`
   query getAllGastos($id:ID){
@@ -37,7 +38,13 @@ export default function GastosScreen({route}){
       },[])
     return(
         <View style={{backgroundColor:'#f1f1fb', height:'100%', alignItems:'center'}}>
-        <View style={{backgroundColor:Theme.colors.primary,marginBottom:20,paddingHorizontal:10, height:50, width:'90%', flexDirection:'row', justifyContent:'space-between', alignItems:'center', borderRadius:10}}>
+        <View style={{backgroundColor:"#f1f1f1",marginBottom:20,paddingHorizontal:10, height:50, width:'90%', flexDirection:'row', justifyContent:'space-between', alignItems:'center', borderRadius:10,shadowRadius: 5.46,
+        shadowOpacity: 0.3,
+        shadowOffset: {
+          width: 2,
+          height: 2,
+          shadowColor: "#000",
+        }}}>
             <Pressable onPress={()=> setTiempo('Todo')} style={[Theme.containers.containerTiempo, {backgroundColor:tiempo === 'Todo' ? 'white': null}]}>
             <Text style={Theme.fonts.descriptionBlue}>Todo</Text>
             </Pressable>
@@ -74,9 +81,28 @@ export default function GastosScreen({route}){
         </View>
         }
 
-        {loading &&
-        <ModalCargando text={'Cargando...'}/>
+        {data?.getAllGastos && tiempo === 'EsteAño' &&
+        <View style={{width:'90%', marginHorizontal:20, borderRadius:20,shadowOpacity: 0.3,
+        shadowRadius: 5.46,
+        shadowOffset: {
+          width: 2,
+          height: 2,
+          shadowColor: "#000",
+        }}}>
+          <AñoGastos data={data?.getAllGastos}/>
+        </View>
         }
+
+      {loading &&
+         <Modal
+         animationType="fade"
+         visible={loading}
+         transparent={true}
+
+       >
+          <ModalCargando text='Cargando Datos...'/>
+       </Modal>
+         }
         </View>
     )
 }

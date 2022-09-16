@@ -11,6 +11,7 @@ import FormCreateVehicule from '../../Components/CarComponents/FormCreateVehicul
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { MaterialIcons } from '@expo/vector-icons';
 import { marcasMotos } from '../../Components/CarComponents/marcasMotos';
+import ModalCargando from '../../utils/ModalCargando';
 
 export const GET_GASTOS = gql`
   query getPrevGastos($id:ID){
@@ -30,6 +31,7 @@ export default function VehiculeDataScreen({route}) {
   const marcaMoto = marcasMotos.find(el=> el.marca === item?.marca)
 
 const [modalVisible2, setModalVisible2] = useState(false);
+
 const  result = useQuery(GET_GASTOS,{variables:{id:item.id}})
 const {height, width} = Dimensions.get('window')
 
@@ -144,15 +146,17 @@ const {height, width} = Dimensions.get('window')
             
           
             
+      {modalVisible2 &&
       <Modal
         animationType="fade"
         transparent={true}
         visible={modalVisible2}
       >
-          <ModalCreateGasto setModalVisible2={setModalVisible2} id={item.id}/>
-      </Modal>
+          <ModalCreateGasto setModalVisible2={setModalVisible2} id={item.id} />
+      </Modal>}
 
     </View>
+    
     </KeyboardAwareScrollView>
   )
 }

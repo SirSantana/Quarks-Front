@@ -14,7 +14,6 @@ export default function AllGastos({data}){
     const [details, setDetails] = useState(null)
 
     const handleDetails=(item)=>{
-        console.log('oi',item);
         setModalVisible(false)
         setDetails(item?.id)
         setModalVisible(true)
