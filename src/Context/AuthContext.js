@@ -1,6 +1,7 @@
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, createContext, useEffect}from 'react';
+import { client } from '../../apollo';
 
 
 export const AuthContext = createContext({
@@ -22,9 +23,7 @@ export function AuthProvider({children}){
     const [user, setUser] = useState(null)
     const [token, setToken] = useState(null)
     const result = useQuery(GET_USER)
-    console.log('us',result.data);
 
-    AsyncStorage.getItem('token').then(res=> setToken(res))
     const login=(dataa)=>{
         if(result?.data?.getUser){
             setUser(result?.data?.getUser)
@@ -33,20 +32,20 @@ export function AuthProvider({children}){
     }
     const logout = ()=>{
     setUser(null)
+    
     }
     const getUser = async () => {
         try {
-            console.log('res', result?.data);
           setUser(result?.data?.getUser)
         } catch (error) {
          console.log(error); 
         }
       };
     useEffect(()=>{
-        console.log('hola');
-        AsyncStorage.getItem('token').then(res=> setToken(res))
          getUser()
-         setUser(result?.data?.getUser)
+         if(!token){
+            client.resetStore()
+         }
     },[result, token])
     const valueContext={
         user,

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Theme } from '../../theme'
-import {View, Text, TextInput, Pressable, Image, Alert} from 'react-native'
+import {View, Text, TextInput, Pressable, Image, Alert, Modal} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import * as Yup  from 'yup'
 import { useFormik } from 'formik'
@@ -8,6 +8,8 @@ import { gql, useMutation } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import useAuth from '../../hooks/useAuth'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import ModalCargando from '../../utils/ModalCargando'
+import { client } from '../../../apollo'
 
 const SIGN_UP = gql`
 mutation signUp($email: String!, $password:String!, $name:String!, $lastName:String!, $confirmPassword:String!) {
@@ -63,6 +65,7 @@ useEffect(()=>{
 
 useEffect(()=>{
   if(data){
+    client.resetStore()
     AsyncStorage.setItem('token',JSON.stringify(data.signUp.token)).then(()=>navigation.navigate('Perfil'))
     login(data?.signUp?.user)
   }
@@ -134,7 +137,16 @@ useEffect(()=>{
             </Pressable>
           </View>
             
-           
+          {loading &&
+         <Modal
+         animationType="fade"
+         visible={loading}
+         transparent={true}
+
+       >
+          <ModalCargando text='Ingresando...'/>
+       </Modal>
+         }
         </View>
         </KeyboardAwareScrollView>
     )

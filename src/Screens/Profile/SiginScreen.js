@@ -1,6 +1,5 @@
 
-import {View, Text, TextInput, Pressable, Image, Alert} from 'react-native'
-import {useEffect, useState} from 'react'
+import {View, Text, TextInput, Pressable, Image, Alert, Modal, ScrollView} from 'react-native'
 import { useMutation, gql } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFormik } from 'formik'
@@ -9,7 +8,10 @@ import { Theme } from '../../theme'
 import { useNavigation } from '@react-navigation/native'
 import useAuth from '../../hooks/useAuth';
 import GET_USER from '../../Context/AuthContext'
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import ModalCargando from '../../utils/ModalCargando';
+import {useEffect, useState} from 'react'
+import { client } from '../../../apollo';
 export const SIGN_IN_MUTATION = gql`
 mutation signIn($email: String!, $password:String!) {
     signIn(input:{email: $email, password:$password}) {
@@ -54,11 +56,16 @@ export default function SignInScreen(){
 
     useEffect(()=>{
       if(data){
-          AsyncStorage.setItem('token',JSON.stringify(data.signIn.token)).then(()=>navigation.navigate('Perfil'))
+        client.resetStore()
+        console.log('entrnado');
         login(data?.signIn.user)
+          AsyncStorage.setItem('token',JSON.stringify(data.signIn.token)).then(()=> navigation.navigate('Perfil'))
       }
     },[data])
     return(
+      <ScrollView contentContainerStyle={{flexGrow: 1}}
+  keyboardShouldPersistTaps='handled'
+>
         <View style={Theme.containers.containerParent}>
           <Image style={{width:40, height:40}} source={require('../../../assets/LogoQuarks1PNG.png')}/>
           <Text style={{fontSize:30, fontWeight:"700", color:'#f50057' }}>Inicia Sesion</Text>
@@ -98,7 +105,17 @@ export default function SignInScreen(){
             </Pressable>
           </View>
             
-           
+          {loading &&
+         <Modal
+         animationType="fade"
+         visible={loading}
+         transparent={true}
+
+       >
+          <ModalCargando text='Ingresando...'/>
+       </Modal>
+         }
         </View>
+        </ScrollView>
     )
 }

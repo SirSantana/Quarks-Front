@@ -2,13 +2,9 @@ import { View, Text,FlatList, TextInput, Modal, Image,StyleSheet, Pressable, Ale
 import React, {useEffect, useLayoutEffect, useState} from "react";
 import { marcasCarros } from "./marcasCarros";
 import { Theme } from "../../theme";
-import { Avatar, Divider, Button } from "react-native-paper";
-import { TouchableHighlight } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { marcasMotos } from "./marcasMotos";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { GET_USER } from "../../Context/AuthContext";
-import useAuth from "../../hooks/useAuth";
 import { GET_VEHICLES } from "../../Screens/Car/CarScreen";
 import * as ImagePicker from 'expo-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'

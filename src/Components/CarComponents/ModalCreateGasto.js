@@ -255,7 +255,7 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
             <Text style={Theme.fonts.descriptionGray}>Dinero Gastado</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:50, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:10}}>
             <MaterialIcons name="attach-money" size={30} color="black" />
-            <TextInput  placeholder={item?.dineroGastado} style={[Theme.fonts.descriptionGray,{width:'90%'}]} onChangeText={(text)=> setForm({...form, dineroGastado:text})} />
+            <TextInput keyboardType='numeric'  placeholder={item?.dineroGastado} style={[Theme.fonts.descriptionGray,{width:'90%'}]} onChangeText={(text)=> setForm({...form, dineroGastado:text})} />
             </Pressable>
 
                 
