@@ -8,6 +8,7 @@ import { useLayoutEffect, useState, useEffect } from "react";
 import { Feather } from '@expo/vector-icons';
 import ModalCreateGasto from "../CarComponents/ModalCreateGasto";
 import ModalCargando from "../../utils/ModalCargando";
+import ModalConfirmDelete from "../../utils/ModalConfirmDelete";
 export const GET_ONE_GASTO = gql`
   query getOneGasto($id:ID){
     getOneGasto(id:$id){
@@ -18,6 +19,7 @@ export const GET_ONE_GASTO = gql`
       imagen
       description
       lugar
+      vehiculo
     }
   }
 `
@@ -25,6 +27,8 @@ export const GET_ONE_GASTO = gql`
 export default function ModalDetailsGasto({id, setModalVisible}){
     const [getOne, {loading, data, error}] = useLazyQuery(GET_ONE_GASTO)
     const [modalVisible2, setModalVisible2] = useState(false)
+    const [visibleDelete, setVisibleDelete] = useState(false)
+
     useLayoutEffect(()=>{
       if(id){
           getOne({variables:{id:id}})
@@ -55,8 +59,7 @@ export default function ModalDetailsGasto({id, setModalVisible}){
                {getOneGasto &&
                <>
                <View style={{width:'100%', flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
-          <Image    style={{width:30, height:30,transform: [{rotate:'180deg'}]}} source={require('../../../assets/iconTriangule.png')}/>
-               
+               <MaterialIcons onPress={()=> setVisibleDelete(true)}  name="delete-outline" size={30} color={Theme.colors.primary} />
                {tipoGasto === 'fuel' || tipoGasto === 'car-brake-parking' || tipoGasto === "car-wrench"?
            <MaterialCommunityIcons  name={tipoGasto} size={50} color={Theme.colors.primary}  />
           : <MaterialIcons  name={tipoGasto} size={50} color={Theme.colors.primary} />}
@@ -113,6 +116,13 @@ export default function ModalDetailsGasto({id, setModalVisible}){
            visible={modalVisible2}
          >
              <ModalCreateGasto setModalVisible2={setModalVisible2} id={id} item={getOneGasto}/>
+         </Modal>
+         <Modal
+           animationType="fade"
+           transparent={true}
+           visible={visibleDelete}
+         >
+             <ModalConfirmDelete setVisibleDelete={setVisibleDelete} id={id} idVehiculo={getOneGasto?.vehiculo} setModalVisible={setModalVisible}/>
          </Modal>
          </>
     )

@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { View, Text, Pressable, BackHandler } from 'react-native'
 import { client } from '../../../apollo'
+import UserInfo from '../../Components/Profile/UserInfo'
 import useAuth from '../../hooks/useAuth'
 import { Theme } from '../../theme'
 
@@ -15,17 +16,23 @@ export const ProfileScreen = () => {
   const handleLogout=()=>{
     AsyncStorage.clear().then(()=> logout())
   }
- console.log('usususu',user);
   return (
-    <View style={Theme.containers.containerParent}>
-      <View style={Theme.containers.containerFlex}>
-      <Text>ProfileScreenn</Text>
+    <View style={[Theme.containers.containerParent,{justifyContent:'none'}]}>
+
+      <UserInfo user={user}/>
+      <Pressable style={{width:'90%',borderRadius:10, height:40, backgroundColor:"#b1b1b1", alignItems:'center', justifyContent:'center'}}>
+        <Text style={Theme.fonts.description}>Editar Perfil</Text>
+      </Pressable>
+    
+      
+      {/* <View style={Theme.containers.containerFlex}>
+      <Text>ProfileScre</Text>
       {user && <Text style={Theme.fonts.titleRed}>Bienvenido {user?.name}</Text>}
         {user && <Text style={Theme.fonts.titleRed}>Email {user?.email}</Text>}
         {user && <Text style={Theme.fonts.titleRed}>Status {user?.role}</Text>}
 
-      </View>
-      <View style={{width:'90%'}}>
+      </View> */}
+      {/* <View style={{width:'90%'}}>
       
       {user?
       <Pressable
@@ -40,7 +47,7 @@ export const ProfileScreen = () => {
                 <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Iniciar Sesion</Text>
         </Pressable>
     }
-      </View>
+      </View> */}
      
       </View>
   )

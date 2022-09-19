@@ -16,8 +16,8 @@ import { GET_ALL_GASTOS } from '../../Screens/Car/GastosScreen';
 import ModalCargando from '../../utils/ModalCargando';
 
 const CREATE_GASTO = gql`
-  mutation createGasto($dineroGastado:String, $tipo:String,$lugar:String, $description:String, $imagen:String, $fecha:Date, $carro:ID){
-    createGasto(input:{dineroGastado:$dineroGastado,tipo:$tipo,lugar:$lugar, description:$description, imagen:$imagen, fecha:$fecha, carro:$carro}){
+  mutation createGasto($dineroGastado:String, $tipo:String,$lugar:String, $description:String, $imagen:String, $fecha:Date, $vehiculo:ID){
+    createGasto(input:{dineroGastado:$dineroGastado,tipo:$tipo,lugar:$lugar, description:$description, imagen:$imagen, fecha:$fecha, vehiculo:$vehiculo}){
       tipo
       dineroGastado
       fecha
@@ -25,12 +25,13 @@ const CREATE_GASTO = gql`
       description
       lugar
       imagen
+      vehiculo
     }
   }
 `
 const UPDATE_GASTO = gql`
-  mutation updateGasto($dineroGastado:String, $tipo:String,$lugar:String, $description:String, $imagen:String, $fecha:Date, $carro:ID, $id:ID){
-    updateGasto(input:{dineroGastado:$dineroGastado,tipo:$tipo,lugar:$lugar, description:$description, imagen:$imagen, fecha:$fecha, carro:$carro, id:$id}){
+  mutation updateGasto($dineroGastado:String, $tipo:String,$lugar:String, $description:String, $imagen:String, $fecha:Date, $vehiculo:ID, $id:ID){
+    updateGasto(input:{dineroGastado:$dineroGastado,tipo:$tipo,lugar:$lugar, description:$description, imagen:$imagen, fecha:$fecha, vehiculo:$vehiculo, id:$id}){
       tipo
       dineroGastado
       fecha
@@ -57,7 +58,7 @@ let initialForm ={
     lugar:'',
     imagen:'',
     description:'',
-    carro:'',
+    vehiculo:'',
     id:''
 }
 export default function ModalCreateGasto({ setModalVisible2, id, item}){
@@ -70,6 +71,7 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
     const [tipoGasto,setTipoGasto] = useState("fuel")
     const [updateGasto, result] = useMutation(UPDATE_GASTO)
 
+    
     const [createGasto, {loading, error, data}] = useMutation(CREATE_GASTO,{
       update(cache, {data}){
     const {getPrevGastos} = cache.readQuery({
@@ -152,7 +154,7 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
       if(item){
         for (let property in form) {
      
-          if(form[property].length === 0 && property != "id"){
+          if(form[property].length === 0 && property != "id" ){
               delete form[property]
         }
       }
@@ -160,7 +162,7 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
       updateGasto({variables:{...form, id:item.id}})
       setForm(initialForm)
     }else{
-      createGasto({variables:{...form, carro:id}})
+      createGasto({variables:{...form, vehiculo:id}})
 
     }
     
@@ -172,7 +174,6 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
     if(data || result?.data){
       return setModalVisible2(false)
     }
-    console.log(result.loading);
     function Render(item){
         const press=()=>{
           setTipoGasto(item.icon)

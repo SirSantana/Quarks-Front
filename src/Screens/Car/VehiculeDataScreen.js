@@ -20,6 +20,7 @@ export const GET_GASTOS = gql`
       dineroGastado
       fecha
       id
+      vehiculo
     }
   }
 `
@@ -34,7 +35,7 @@ const [modalVisible2, setModalVisible2] = useState(false);
 
 const  result = useQuery(GET_GASTOS,{variables:{id:item.id}})
 const {height, width} = Dimensions.get('window')
-
+console.log(item.id);
 
   useLayoutEffect(()=>{
     if(item){
@@ -135,7 +136,7 @@ const {height, width} = Dimensions.get('window')
             
             
             
-            <Pressable style={Theme.buttons.primary} onPress={()=> setModalVisible2(true)}>
+            <Pressable style={[Theme.buttons.primary,{width:'100%'}]} onPress={()=> setModalVisible2(true)}>
             <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Agregar Gasto</Text>
 
             </Pressable>

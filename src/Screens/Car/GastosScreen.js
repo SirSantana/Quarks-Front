@@ -14,6 +14,7 @@ export const GET_ALL_GASTOS = gql`
       dineroGastado
       fecha
       id
+      vehiculo
     }
   }
 `

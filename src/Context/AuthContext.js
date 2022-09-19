@@ -15,6 +15,8 @@ export const GET_USER = gql`
             name
             email
             vehiculos
+            avatar
+            role
         }
     }
 `
