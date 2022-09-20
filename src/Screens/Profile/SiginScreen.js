@@ -57,7 +57,6 @@ export default function SignInScreen(){
     useEffect(()=>{
       if(data){
         client.resetStore()
-        console.log('entrnado');
         login(data?.signIn.user)
           AsyncStorage.setItem('token',JSON.stringify(data.signIn.token)).then(()=> navigation.navigate('Perfil'))
       }

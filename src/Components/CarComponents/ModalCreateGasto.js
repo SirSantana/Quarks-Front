@@ -171,9 +171,12 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
     if(error){
       Alert.alert(error)
     }
-    if(data || result?.data){
-      return setModalVisible2(false)
-    }
+    useEffect(()=>{
+      if(data || result?.data){
+        return setModalVisible2(false)
+      }
+    },[data, result?.data])
+    
     function Render(item){
         const press=()=>{
           setTipoGasto(item.icon)
@@ -336,6 +339,16 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
           </Pressable>
         
       </Modal>
+      {loading || result?.loading &&
+         <Modal
+         animationType="fade"
+         visible={loading || result?.loading}
+         transparent={true}
+
+       >
+          <ModalCargando text='Guardando...'/>
+       </Modal>
+         }
           </View>
         </KeyboardAwareScrollView>
         

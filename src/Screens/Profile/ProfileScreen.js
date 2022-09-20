@@ -2,9 +2,10 @@ import { gql, useQuery } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { View, Text, Pressable, BackHandler, Modal } from 'react-native'
+import { View, Text, Pressable, BackHandler, Modal,TouchableOpacity } from 'react-native'
 import { client } from '../../../apollo'
 import EditProfile from '../../Components/Profile/EditProfile'
+import Recordatorios from '../../Components/Profile/Recordatorios'
 import UserInfo from '../../Components/Profile/UserInfo'
 import useAuth from '../../hooks/useAuth'
 import { Theme } from '../../theme'
@@ -20,10 +21,12 @@ export const ProfileScreen = () => {
   return (
     <View style={[Theme.containers.containerParent,{justifyContent:null}]}>
 
+      {user ?
+      <>
       <UserInfo user={user}/>
-      <Pressable onPress={()=> setVisibleEdit(true)} style={{width:'90%', height:40,borderRadius:10, backgroundColor:"#b1b1b1", alignItems:'center', justifyContent:'center'}}>
+      <TouchableOpacity onPress={()=> setVisibleEdit(true)} style={{width:'90%', height:40,borderRadius:10, backgroundColor:"#b1b1b1", alignItems:'center', justifyContent:'center'}}>
         <Text style={Theme.fonts.description}>Editar Perfil</Text>
-      </Pressable>
+      </TouchableOpacity>
 
       <Modal
          animationType="fade"
@@ -33,6 +36,15 @@ export const ProfileScreen = () => {
        >
         <EditProfile user={user} setVisibleEdit={setVisibleEdit}/>
        </Modal>
+       <Recordatorios name={user?.name}/>
+      </>
+      :
+      <Pressable
+            onPress={()=> navigation.navigate('SignIn')}
+            style={{width:'100%',backgroundColor:'#1b333d', height:50, borderRadius:10,justifyContent:'center', alignItems:'center'}}>
+                <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Iniciar Sesion</Text>
+        </Pressable>
+      }
       
       {/* <View style={Theme.containers.containerFlex}>
       <Text>ProfileScre</Text>

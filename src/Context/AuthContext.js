@@ -20,6 +20,7 @@ export const GET_USER = gql`
             role
             ciudad 
             pais
+            id
         }
     }
 `

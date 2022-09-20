@@ -14,8 +14,33 @@ import FormCreateVehicule from '../Components/CarComponents/FormCreateVehicule';
 import VehiculeDataScreen from '../Screens/Car/VehiculeDataScreen';
 import AllGastos from '../Components/Gastos/AllGastos';
 import GastosScreen from '../Screens/Car/GastosScreen';
+import * as Notifications from 'expo-notifications';
+import { useEffect } from 'react';
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+
+// async function registerForPushNotificationsAsync() {
+//   let token;
+
+//   const { status: existingStatus } = await Notifications.getPermissionsAsync();
+//   let finalStatus = existingStatus;
+
+//   if (existingStatus !== 'granted') {
+//       const { status } = await Notifications.requestPermissionsAsync();
+//       finalStatus = status;
+//   }
+//   if (finalStatus !== 'granted') {
+//       alert('Failed to get push token for push notification!');
+//       return;
+//   }
+//   token = (await Notifications.getExpoPushTokenAsync()).data;
+//   console.log(token);
+
+//   return token;
+// }
+
 
 const TabBarIcon=({color, name})=>{
   if(name === 'home'){
@@ -27,6 +52,10 @@ const TabBarIcon=({color, name})=>{
 }
 
 export const Navigation=()=>{
+
+//   useEffect(() => {
+//     registerForPushNotificationsAsync();
+// }, []);
   return(
     <NavigationContainer>
       <Tab.Navigator

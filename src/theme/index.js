@@ -62,7 +62,7 @@ export const Theme = {
       borderRadius: 10,
       justifyContent: "center",
       alignItems: "center",
-      width:120
+      width:140
     },
     primaryOutlined: {
       borderColor: "#f50057",
@@ -72,7 +72,7 @@ export const Theme = {
       borderRadius: 10,
       justifyContent: "center",
       alignItems: "center",
-      width:120
+      width:140
 
     },
     secondary: {

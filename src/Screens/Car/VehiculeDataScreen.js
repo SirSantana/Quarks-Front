@@ -1,4 +1,4 @@
-import { View, Text, Image, Button, FlatList, Pressable,StyleSheet, Modal, Alert, Dimensions, } from 'react-native'
+import { View, Text, Image, Button, TouchableOpacity, Pressable,StyleSheet, Modal, Alert, Dimensions, } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { marcasCarros } from '../../Components/CarComponents/marcasCarros';
 import { Theme } from '../../theme';
@@ -88,7 +88,7 @@ console.log(item.id);
       },}}>
             <View style={{borderRadius:10,marginBottom:5, height:50, padding:5, justifyContent:'center'}}>
               <View style={{justifyContent:'space-between', flexDirection:'row'}}>
-              <Text style={[Theme.fonts.titleBig,{fontSize:20}]}>Gastos Recientes</Text>
+              <Text style={[Theme.fonts.titleBig,{fontSize:18}]}>Gastos Recientes</Text>
               <Text onPress={()=> navigation.navigate('Gastos', {id:item.id})} style={Theme.fonts.descriptionBlue}>Ver Todo</Text>
               </View>
 
@@ -136,10 +136,10 @@ console.log(item.id);
             
             
             
-            <Pressable style={[Theme.buttons.primary,{width:'100%'}]} onPress={()=> setModalVisible2(true)}>
+            <TouchableOpacity style={[Theme.buttons.primary,{width:'100%'}]} onPress={()=> setModalVisible2(true)}>
             <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Agregar Gasto</Text>
 
-            </Pressable>
+            </TouchableOpacity>
 
           </View>
 

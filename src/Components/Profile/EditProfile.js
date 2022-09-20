@@ -1,19 +1,23 @@
-import {Modal, View, Text, StyleSheet, Pressable, TextInput, Image, Alert} from 'react-native'
+import {Modal, View, Text, StyleSheet, Pressable, TextInput, Image, Alert, Dimensions,TouchableOpacity} from 'react-native'
 import { Theme } from '../../theme';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
 import { gql, useMutation } from '@apollo/client';
 import { GET_USER } from '../../Context/AuthContext';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import ModalCargando from '../../utils/ModalCargando';
 
 const EDIT_USER = gql`
     mutation editUser($name:String, $apellido:String, $avatar:String, $ciudad:String, $pais:String){
         editUser(input:{name:$name, apellido:$apellido, avatar:$avatar, ciudad:$ciudad, pais:$pais}){
                 name
                 apellido
+                pais
                 avatar
                 ciudad
                 id
+                role
         }
     }
 `
@@ -28,7 +32,8 @@ const initialForm={
 export default function EditProfile({user, setVisibleEdit}){
     const [image, setImage] = useState(null);
     const [form, setForm] = useState(initialForm)
-    const [editUser, {loading, data, error}] = useMutation(EDIT_USER, {refetchQueries:[{query:GET_USER}]})
+    const [editUser, {loading, data, error}] = useMutation(EDIT_USER)
+    const { width,height } = Dimensions.get('window');
 
     const handleEdit=()=>{
         for (let property in form) {
@@ -37,15 +42,17 @@ export default function EditProfile({user, setVisibleEdit}){
           }
         }
         editUser({variables:form})
-        setVisibleEdit(false)
     }
    
     if(error){
         Alert.alert(error)
       }
-      if(data){
-        return setVisibleEdit(false)
-      }
+      useEffect(()=>{
+        if(data){
+          return setVisibleEdit(false)
+        }
+      },[data])
+    
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -65,7 +72,11 @@ export default function EditProfile({user, setVisibleEdit}){
 
     return(
         <>
-        <Pressable onPress={()=> setVisibleEdit(false)} style={styles.centeredView}>
+        <KeyboardAwareScrollView 
+    resetScrollToCoords={{ x: 0, y: 0 }}
+        keyboardShouldPersistTaps= 'always'
+        >
+        <Pressable onPress={()=> setVisibleEdit(false)}style={[styles.centeredView,{height:height, justifyContent:'center'}]}>
           <View style={styles.modalView}>
           <View style={{flexDirection:'column', justifyContent:'space-between', marginBottom:20}}>
             <Text style={Theme.fonts.titleBlue}>Hola Miguel</Text>
@@ -114,15 +125,26 @@ export default function EditProfile({user, setVisibleEdit}){
 
            </View>
             <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:20}}>
-            <Pressable onPress={()=> handleEdit()} disabled={form == initialForm ? true: false || loading && true} style={[Theme.buttons.primary, {backgroundColor: form == initialForm ? 'gray': Theme.colors.primary}]}>
+            <TouchableOpacity onPress={()=> handleEdit()} disabled={form == initialForm ? true: false || loading && true} style={[Theme.buttons.primary, {backgroundColor: form == initialForm ? 'gray': Theme.colors.primary}]}>
                 <Text style={Theme.fonts.description}>Editar</Text>
-            </Pressable>
-            <Pressable disabled={loading && true} onPress={()=> setVisibleEdit(false)} style={Theme.buttons.primaryOutlined}>
+            </TouchableOpacity>
+            <TouchableOpacity disabled={loading && true} onPress={()=> setVisibleEdit(false)} style={Theme.buttons.primaryOutlined}>
                 <Text style={Theme.fonts.descriptionRed}>Cancelar</Text>
-            </Pressable>
+            </TouchableOpacity>
             </View>
           </View>
+          {loading &&
+         <Modal
+         animationType="fade"
+         visible={loading}
+         transparent={true}
+
+       >
+          <ModalCargando text='Guardando...'/>
+       </Modal>
+         }
         </Pressable>
+        </KeyboardAwareScrollView>
         </>
     )
 }
@@ -130,8 +152,6 @@ export default function EditProfile({user, setVisibleEdit}){
 const styles = StyleSheet.create({
     centeredView: {
       flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
       backgroundColor:'rgba(0,0,0,0.5)',
 
     },
