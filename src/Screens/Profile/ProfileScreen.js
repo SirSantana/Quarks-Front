@@ -2,8 +2,9 @@ import { gql, useQuery } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { View, Text, Pressable, BackHandler } from 'react-native'
+import { View, Text, Pressable, BackHandler, Modal } from 'react-native'
 import { client } from '../../../apollo'
+import EditProfile from '../../Components/Profile/EditProfile'
 import UserInfo from '../../Components/Profile/UserInfo'
 import useAuth from '../../hooks/useAuth'
 import { Theme } from '../../theme'
@@ -12,18 +13,26 @@ import { Theme } from '../../theme'
 export const ProfileScreen = () => {
   const navigation = useNavigation()
   const{user, logout} = useAuth()
-  console.log('user', user);
+  const [visibleEdit, setVisibleEdit] = useState(false)
   const handleLogout=()=>{
     AsyncStorage.clear().then(()=> logout())
   }
   return (
-    <View style={[Theme.containers.containerParent,{justifyContent:'none'}]}>
+    <View style={[Theme.containers.containerParent,{justifyContent:null}]}>
 
       <UserInfo user={user}/>
-      <Pressable style={{width:'90%',borderRadius:10, height:40, backgroundColor:"#b1b1b1", alignItems:'center', justifyContent:'center'}}>
+      <Pressable onPress={()=> setVisibleEdit(true)} style={{width:'90%', height:40,borderRadius:10, backgroundColor:"#b1b1b1", alignItems:'center', justifyContent:'center'}}>
         <Text style={Theme.fonts.description}>Editar Perfil</Text>
       </Pressable>
-    
+
+      <Modal
+         animationType="fade"
+         visible={visibleEdit}
+         
+         transparent={true}
+       >
+        <EditProfile user={user} setVisibleEdit={setVisibleEdit}/>
+       </Modal>
       
       {/* <View style={Theme.containers.containerFlex}>
       <Text>ProfileScre</Text>

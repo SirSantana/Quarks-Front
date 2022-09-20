@@ -13,10 +13,13 @@ export const GET_USER = gql`
     query getUser{
         getUser{
             name
+            apellido
             email
             vehiculos
             avatar
             role
+            ciudad 
+            pais
         }
     }
 `
@@ -29,7 +32,6 @@ export function AuthProvider({children}){
     const login=(dataa)=>{
         if(result?.data?.getUser){
             setUser(result?.data?.getUser)
-
         }
     }
     const logout = ()=>{
