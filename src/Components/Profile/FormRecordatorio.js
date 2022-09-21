@@ -6,7 +6,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Fontisto } from '@expo/vector-icons';
 import { gql, useMutation, useQuery } from '@apollo/client'
 import ModalCargando from '../../utils/ModalCargando';
-import { GET_RECORDATORIO } from './Recordatorios';
+import { GET_RECORDATORIO, GET_RECORDATORIOS } from './Recordatorios';
 
 
 const CREATE_RECORDATORIO = gql`
@@ -31,7 +31,7 @@ export default function FormRecordatorio({setVisibleCreate, name}){
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [form, setForm] = useState(initialForm)
-    const [createRecordatorio, {loading, data, error}] = useMutation(CREATE_RECORDATORIO, {refetchQueries:[{query:GET_RECORDATORIO}]})
+    const [createRecordatorio, {loading, data, error}] = useMutation(CREATE_RECORDATORIO, {refetchQueries:[{query:GET_RECORDATORIOS}]})
     const showDatePicker = () => {
         setDatePickerVisible(true);
       };
@@ -72,9 +72,6 @@ export default function FormRecordatorio({setVisibleCreate, name}){
             </View>
 
            
-
-            
-
             <Text style={[Theme.fonts.descriptionGray,{textAlign:'left'}]}>Titulo</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:50, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:10}}>
             {/* <FontAwesome5 name="store" size={20} color="#1b333d" style={{marginLeft:5}}/> */}
@@ -104,7 +101,7 @@ export default function FormRecordatorio({setVisibleCreate, name}){
 
             <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:20}}>
             <TouchableOpacity onPress={()=> handleCreate()} disabled={form.titulo == initialForm.titulo || form.fecha == initialForm.fecha ? true: false} style={[Theme.buttons.primary,{backgroundColor:form.titulo == initialForm.titulo || form.fecha == initialForm.fecha ? 'gray': Theme.colors.primary}]}>
-                <Text style={Theme.fonts.description}>Editar</Text>
+                <Text style={Theme.fonts.description}>Crear</Text>
             </TouchableOpacity>
             <TouchableOpacity  onPress={()=> setVisibleCreate(false)} style={Theme.buttons.primaryOutlined}>
                 <Text style={Theme.fonts.descriptionRed}>Cancelar</Text>

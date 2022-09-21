@@ -1,5 +1,5 @@
 import AllGastos from "../../Components/Gastos/AllGastos";
-import {Text, View, Pressable, Modal} from 'react-native'
+import {Text, View, Pressable, Modal, StyleSheet} from 'react-native'
 import { gql, useLazyQuery } from "@apollo/client";
 import { useLayoutEffect, useState } from "react";
 import ModalCargando from "../../utils/ModalCargando";
@@ -59,37 +59,19 @@ export default function GastosScreen({route}){
         </View>
 
         {data?.getAllGastos && tiempo === 'Todo' &&
-        <View style={{width:'90%', backgroundColor:'#f3f3f3', marginHorizontal:20, padding:10, borderRadius:20,shadowOpacity: 0.3,
-        shadowRadius: 5.46,
-        shadowOffset: {
-          width: 2,
-          height: 2,
-          shadowColor: "#000",
-        }}}>
+        <View style={styles.viewTime}>
         <AllGastos data={data?.getAllGastos}/>
         </View>
         }
 
         {data?.getAllGastos && tiempo === 'EsteMes' &&
-        <View style={{width:'90%', marginHorizontal:20, borderRadius:20,shadowOpacity: 0.3,
-        shadowRadius: 5.46,
-        shadowOffset: {
-          width: 2,
-          height: 2,
-          shadowColor: "#000",
-        }}}>
+        <View style={styles.viewTime}>
         <MesGastos data={dataMonthActual}/>
         </View>
         }
 
         {data?.getAllGastos && tiempo === 'EsteAño' &&
-        <View style={{width:'90%', marginHorizontal:20, borderRadius:20,shadowOpacity: 0.3,
-        shadowRadius: 5.46,
-        shadowOffset: {
-          width: 2,
-          height: 2,
-          shadowColor: "#000",
-        }}}>
+        <View style={styles.viewTime}>
           <AñoGastos data={data?.getAllGastos}/>
         </View>
         }
@@ -107,3 +89,15 @@ export default function GastosScreen({route}){
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+  viewTime:{
+    width:'90%', marginHorizontal:20, borderRadius:20,shadowOpacity: 0.3,
+    shadowRadius: 5.46,
+    shadowOffset: {
+      width: 2,
+      height: 2,
+      shadowColor: "#000",
+    }
+  }
+})

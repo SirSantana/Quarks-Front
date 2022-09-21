@@ -5,6 +5,7 @@ import React, {useEffect, useLayoutEffect, useState} from "react";
 import { gql, useLazyQuery } from '@apollo/client';
 import { Theme } from '../../theme';
 import { FontAwesome5 } from '@expo/vector-icons'; 
+import ModalConfirmDelete from '../../utils/ModalConfirmDelete';
 
 export const GET_RECORDATORIO = gql`
     query getOneRecordatorio($id:ID){
@@ -20,6 +21,8 @@ export const GET_RECORDATORIO = gql`
 export default function ModalDetailsRecordatorio({id, setModalVisible}){
     const [getOne, {data, loading, error}] = useLazyQuery(GET_RECORDATORIO)
     let fecha = new Date(data?.getOneRecordatorio?.fecha)
+    const [visibleDelete, setVisibleDelete] = useState(false)
+
     const getOneRecordatorio = data?.getOneRecordatorio
     useLayoutEffect(()=>{
         if(id){
@@ -34,7 +37,9 @@ export default function ModalDetailsRecordatorio({id, setModalVisible}){
                {getOneRecordatorio &&
                <>
                <View style={{width:'100%', flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
-               <MaterialIcons  name="delete-outline" size={30} color={Theme.colors.primary} />
+               <MaterialIcons onPress={()=> setVisibleDelete(true)}  name="delete-outline" size={30} color={Theme.colors.primary} />
+               <Text style={Theme.fonts.titleBlue}>Recordatorio</Text>
+
                {/* <Feather onPress={handleEdit} name="edit" size={25} color={Theme.colors.primary} /> */}
                <FontAwesome5 name="bell" size={24} color={Theme.colors.primary} />
           
@@ -69,20 +74,13 @@ export default function ModalDetailsRecordatorio({id, setModalVisible}){
               </View>
 
           </Pressable>
-           {/* <Modal
-           animationType="fade"
-           transparent={true}
-           visible={modalVisible2}
-         >
-             <ModalCreateGasto setModalVisible2={setModalVisible2} id={id} item={getOneGasto}/>
-         </Modal>
-         <Modal
+          <Modal
            animationType="fade"
            transparent={true}
            visible={visibleDelete}
          >
-             <ModalConfirmDelete setVisibleDelete={setVisibleDelete} id={id} idVehiculo={getOneGasto?.vehiculo} setModalVisible={setModalVisible}/>
-         </Modal> */}
+             <ModalConfirmDelete setVisibleDelete={setVisibleDelete} id={id}  setModalVisible={setModalVisible}/>
+         </Modal>
         </>
     )
 }

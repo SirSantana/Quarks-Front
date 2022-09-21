@@ -58,7 +58,7 @@ console.log(item.id);
     resetScrollToCoords={{ x: 0, y: 0 }}
         keyboardShouldPersistTaps= 'always'
         style= {{ flex:1, height:'100%' }}>
-        <View style={{backgroundColor:'white',height:height,marginBottom:'10%'}}>
+        <View style={{backgroundColor:'#f1f1fb',height:height,marginBottom:'10%'}}>
          
           {item?.imagen
            ?<Image   style={{
@@ -79,25 +79,20 @@ console.log(item.id);
           <Text style={Theme.fonts.descriptionGray}>{item?.modelo}</Text>
           </View>
           </View>
-          <View style={{backgroundColor:'#f3f3f3', marginHorizontal:20, padding:10, borderRadius:20,shadowOpacity: 0.3,
-      shadowRadius: 5.46,
-      shadowOffset: {
-        width: 2,
-        height: 2,
-        shadowColor: "#000",
-      },}}>
+          <View
+              style={{
+                borderBottomColor: 'black',
+                borderBottomWidth: StyleSheet.hairlineWidth,
+              }}
+            />
+          <View style={{padding:10}}>
             <View style={{borderRadius:10,marginBottom:5, height:50, padding:5, justifyContent:'center'}}>
               <View style={{justifyContent:'space-between', flexDirection:'row'}}>
               <Text style={[Theme.fonts.titleBig,{fontSize:18}]}>Gastos Recientes</Text>
               <Text onPress={()=> navigation.navigate('Gastos', {id:item.id})} style={Theme.fonts.descriptionBlue}>Ver Todo</Text>
               </View>
 
-              <View
-              style={{
-                borderBottomColor: 'black',
-                borderBottomWidth: StyleSheet.hairlineWidth,
-              }}
-            />
+              
             </View>
             
               {result.loading&&
