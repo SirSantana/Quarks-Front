@@ -22,9 +22,7 @@ const CREATE_GASTO = gql`
       dineroGastado
       fecha
       id
-      description
       lugar
-      imagen
       vehiculo
     }
   }
@@ -78,24 +76,33 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
       query:GET_GASTOS,
       variables:{id:id}
     })
-    const {getAllGastos} = cache.readQuery({
-      query:GET_ALL_GASTOS,
-      variables:{id:id}
-    })
+    
      cache.writeQuery({
       query:GET_GASTOS,
       variables:{id:id},
       data:{
-        getPrevGastos:[...getPrevGastos,data.createGasto]
+        getPrevGastos:[...getPrevGastos,data?.createGasto]
       }
     })
-    cache.writeQuery({
-      query:GET_ALL_GASTOS,
-      variables:{id:id},
-      data:{
-        getAllGastos:[...getAllGastos,data.createGasto]
-      }
-    })
+    let cah = cache.readQuery({query:GET_ALL_GASTOS,variables:{id:id}})
+    if(cah !== null){
+      console.log('dadas');
+      cache.writeQuery({
+        query:GET_ALL_GASTOS,
+        variables:{id:id},
+        data:{
+          getAllGastos:[...cah.getAllGastos,data?.createGasto]
+        }
+      })
+    }
+    // const {getAllGastos} = cache.readQuery({
+    //   query:GET_ALL_GASTOS,
+    //   variables:{id:id}
+    // })
+    
+    setModalVisible2(false)
+
+    
   }
 }
 )
@@ -158,25 +165,25 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
               delete form[property]
         }
       }
-      setForm({...form, id:item.id})
+      setForm({...form})
       updateGasto({variables:{...form, id:item.id}})
       setForm(initialForm)
     }else{
       createGasto({variables:{...form, vehiculo:id}})
-
     }
     
     }
     
-    if(error){
-      Alert.alert(error)
+    if(error|| result?.error){
+      Alert.alert(error?.message)
     }
     useEffect(()=>{
       if(data || result?.data){
-        return setModalVisible2(false)
+        setModalVisible2(false)
       }
     },[data, result?.data])
-    console.log(form.dineroGastado);
+    
+    
     function Render(item){
         const press=()=>{
           setTipoGasto(item.icon)
@@ -199,16 +206,7 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
       }
     return(
       <>
-      {loading || result?.loading &&
-        <Modal
-        animationType="fade"
-        visible={loading}
-        transparent={true}
-
-      >
-         <ModalCargando text={'Guardando Datos'}/>
-      </Modal>
-        }
+      
         <Pressable style={styles.centeredView}>
           
             <KeyboardAwareScrollView 
@@ -259,7 +257,7 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
             <Text style={Theme.fonts.descriptionGray}>Dinero Gastado</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:50, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:10}}>
             <MaterialIcons name="attach-money" size={30} color="black" />
-            <TextInput keyboardType = 'number-pad' placeholder={item?.dineroGastado} style={[Theme.fonts.descriptionGray,{width:'90%'}]} onChangeText={(text)=> setForm({...form, dineroGastado:text.replace(/[^0-9]/g, ''),})} />
+            <TextInput keyboardType='numeric' placeholder={item?.dineroGastado} style={[Theme.fonts.descriptionGray,{width:'90%'}]} onChangeText={(text)=> setForm({...form, dineroGastado:text})} />
             </Pressable>
 
                 
@@ -339,14 +337,25 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
           </Pressable>
         
       </Modal>
-      {loading || result?.loading &&
+      {result?.loading &&
          <Modal
          animationType="fade"
-         visible={loading || result?.loading}
+         visible={result?.loading}
          transparent={true}
 
        >
-          <ModalCargando text='Guardando...'/>
+          <ModalCargando text='Editando Gasto...'/>
+       </Modal>
+         }
+         {
+          loading &&
+          <Modal
+         animationType="fade"
+         visible={loading}
+         transparent={true}
+
+       >
+          <ModalCargando text='Creando Gasto...'/>
        </Modal>
          }
           </View>

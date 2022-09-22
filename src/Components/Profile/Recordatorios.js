@@ -54,7 +54,7 @@ export default function Recordatorios({name}){
               return(
         <Pressable onPress={()=> handleDetails(el)} key={el.id} style={styles.containerGasto}>
             <View style={{flexDirection:'row', alignItems:'center'}}>
-            <View style={{ flexDirection:'row'}}>
+            <View style={{ flexDirection:'row', alignItems:'center'}}>
               <MaterialCommunityIcons name="file-eye-outline" size={24} color={Theme.colors.secondary} style={{marginRight:5}} />
             <Text style={Theme.fonts.descriptionBlue}>{el.titulo.slice(0,20)}</Text>
             </View>

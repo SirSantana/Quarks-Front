@@ -77,7 +77,7 @@ export default function ModalDetailsGasto({id, setModalVisible}){
                 </View>
                 <View style={styles.viewDetail}>
                <Text style={Theme.fonts.descriptionGray}>Dinero Gastado</Text>
-               <Text style={Theme.fonts.descriptionBlue}>$ {getOneGasto.dineroGastado}</Text>
+               <Text style={Theme.fonts.descriptionBlue}>$ {getOneGasto.dineroGastado.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</Text>
                 </View>
 
                 {getOneGasto?.description &&
