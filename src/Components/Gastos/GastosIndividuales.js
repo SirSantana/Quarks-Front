@@ -56,7 +56,7 @@ export default function GastosIndividuales({tipos, setIdItem, setModalVisible}){
               <MaterialCommunityIcons name="file-eye-outline" size={24} color="black" style={{marginRight:5}} />
               <Text>{fecha}</Text>
               </View>
-              <Text style={Theme.fonts.descriptionRed}>$ {item.dineroGastado}</Text>
+              <Text style={Theme.fonts.descriptionRed}>$ {item.dineroGastado.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</Text>
           </Pressable>     
         )
 

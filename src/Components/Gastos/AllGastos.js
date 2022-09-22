@@ -43,7 +43,7 @@ export default function AllGastos({data}){
             </View>
             </View>
             <View>
-            <Text style={[Theme.fonts.descriptionRed]}>$ {item.dineroGastado}</Text>
+            <Text style={[Theme.fonts.descriptionRed]}>$ {item.dineroGastado.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</Text>
               </View> 
       
           </View>

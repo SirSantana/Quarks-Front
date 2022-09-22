@@ -120,7 +120,7 @@ console.log(item.id);
             </View>
             </View>
             <View>
-            <Text style={[Theme.fonts.descriptionRed]}>$ {el.dineroGastado}</Text>
+            <Text style={[Theme.fonts.descriptionRed]}>$ {el.dineroGastado.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</Text>
               </View> 
       
           </View>
