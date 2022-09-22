@@ -1,7 +1,7 @@
-import {View, Text, Pressable,StyleSheet, Modal,Dimensions,TouchableOpacity,ScrollView} from 'react-native'
+import {View, Text, Pressable,StyleSheet, Modal,Dimensions,TouchableOpacity,ScrollView, Alert, ActivityIndicator} from 'react-native'
 import { Theme } from '../../theme'
 import FormRecordatorio from './FormRecordatorio'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ModalDetailsRecordatorio from './ModalDetailsRecordatorio'
@@ -22,11 +22,19 @@ export default function Recordatorios({name}){
     const result = useQuery(GET_RECORDATORIOS)
     const [modalVisible, setModalVisible] = useState(false)
     const [details, setDetails] = useState(null)
-
+    const [recordatorios, setRecordatorios] = useState(null)
     const handleDetails=(el)=>{
         setModalVisible(true)
         setDetails(el?.id)
     }
+    if(result.error){
+        Alert.alert('Ha ocurrido un error')
+    }
+    useEffect(()=>{
+      if(result.data){
+        setRecordatorios(result?.data?.getRecordatorios)
+      }
+    },[result.data])
     return(
         
         <ScrollView style={{backgroundColor:'#f1f1fb', width:'95%'}}>
@@ -36,8 +44,8 @@ export default function Recordatorios({name}){
               <FontAwesome5 name="bell" size={24} color={Theme.colors.secondary} />
               {/* <Text onPress={()=> navigation.navigate('Gastos', {id:item.id})} style={Theme.fonts.descriptionBlue}>Ver Todo</Text> */}
               </View>
-            {result.loading && <Text>Cargando...</Text>}
-            { result?.data?.getRecordatorios?.map(el=>{
+            {result.loading && <ActivityIndicator color={Theme.colors.primary}/>}
+            { recordatorios?.map(el=>{
           let fecha = new Date(el.fecha) 
           const dateActual = new Date()
           let diasFaltantes = fecha.getTime() - dateActual.getTime()
