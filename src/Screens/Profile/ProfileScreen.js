@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { View, Text, Pressable, BackHandler, Modal,TouchableOpacity, ScrollView, Dimensions, Image } from 'react-native'
+import { View, Text, Pressable, BackHandler, Modal,TouchableOpacity, ScrollView, Dimensions, Image, SafeAreaView } from 'react-native'
 import { client } from '../../../apollo'
 import EditProfile from '../../Components/Profile/EditProfile'
 import Recordatorios from '../../Components/Profile/Recordatorios'
@@ -28,7 +28,7 @@ export const ProfileScreen = () => {
     }
   },[user])
   return (
-    <ScrollView style={{flexGrow:1}}>
+    <SafeAreaView style={{flexGrow:1}}>
       {user ?
       <>
       <View style={[Theme.containers.containerParent]}>
@@ -51,16 +51,16 @@ export const ProfileScreen = () => {
 
        <Pressable
       onPress={handleLogout}
-      style={{width:'90%',backgroundColor:'#1b333d', height:50, borderRadius:10,justifyContent:'center', alignItems:'center',}}>
-          <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Cerrar Sesion</Text>
+      style={[Theme.buttons.primaryOutlined,{width:'90%'}]}>
+          <Text style={{color:Theme.colors.primary, fontSize:18, fontWeight:"600"}}>Cerrar Sesion</Text>
       </Pressable>
       </View>
 
       </>
      :
-     <View style={{justifyContent:'center', alignItems:'center', height:height, backgroundColor:'#f1f1fb'}}>
+     <View style={Theme.containers.containerParent}>
 
-     <Image style={{width:300, height:300}} source={require('../../../assets/Citydriver.png')}/>
+     <Image style={{width:'100%', height:'70%', marginBottom:'5%'}} source={require('../../../assets/Citydriver.png')}/>
      <Text style={[Theme.fonts.titleBlue,{width:'90%', textAlign:'center', fontSize:26}]}>Crea tu Perfil Gratis!</Text>
      <Text style={[Theme.fonts.descriptionGray,{width:'90%', marginBottom:20, textAlign:'center'}]}>No te demoraras mas de 2 minutos.</Text>
 
@@ -72,6 +72,6 @@ export const ProfileScreen = () => {
       
       }
     
-      </ScrollView>
+      </SafeAreaView>
   )
 }

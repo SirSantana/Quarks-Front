@@ -32,7 +32,6 @@ export const CarScreen=({route}) =>{
         
         {data?.getCars?.length>0 && user && !create?
         <View style={{width:'100%',shadowColor: "#000",
-        
         height:"100%",
         paddingTop:'20%',
         justifyContent:'center',
@@ -66,26 +65,26 @@ export const CarScreen=({route}) =>{
 
       :
       <>
-          <Image style={{width:300, height:300, marginBottom:20}} source={require('../../../assets/CarBack.png')}/>
+          <Image style={{width:'90%', height:'50%', marginBottom:20}} source={require('../../../assets/CarBack.png')}/>
 
-    <Text style={[Theme.fonts.titleBlue,{width:'90%', textAlign:'center', fontSize:26}]}>Elige el tipo de Vehiculo</Text>
+        <Text style={[Theme.fonts.titleBlue,{width:'90%', textAlign:'center', fontSize:26}]}>Crea tu Vehiculo</Text>
     <Text style={[Theme.fonts.descriptionGray]}>Y empieza a llevar tus gastos!</Text>
+    <Text style={[Theme.fonts.descriptionGray]}>Elige tu tipo de Vehiculo, Carro o Moto</Text>
+
 
       <View style={{  flexDirection:'row', justifyContent:'space-between', width:'60%', marginTop:20}}>
           <Pressable onPress={()=>handleCreate('Carro')} style={Theme.containers.containerBox}>
           <Image style={{width:80, height:80}} source={require('../../../assets/carroBlanco.png')}/>
-            
           </Pressable>
-          <Pressable onPress={()=>handleCreate("Moto")}
-           style={Theme.containers.containerBox}>
+
+          <Pressable onPress={()=>handleCreate("Moto")}style={Theme.containers.containerBox}>
           <Image style={{width:80, height:80}} source={require('../../../assets/motoBlanca.png')}/>
-                
           </Pressable>
           
       </View>
       {data?.getCars?.length>0 &&
-          <Pressable onPress={()=> setCreate(false)} style={[Theme.buttons.primaryOutlined,{width:'50%', marginTop:20}]}>
-                <Text style={{color:'#f50057', fontSize:18, fontWeight:"600"}}>Ver mis Vehiculos</Text>
+          <Pressable onPress={()=> setCreate(false)} style={[Theme.buttons.primary,{width:'90%', marginTop:20}]}>
+                <Text style={Theme.fonts.titleWhite}>Ver mis Vehiculos</Text>
             </Pressable>}
     </>
       }
