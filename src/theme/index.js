@@ -86,7 +86,7 @@ export const Theme = {
     },
   },
   containers: {
-    containerParent: {
+      containerParent: {
       justifyContent: "center",
       alignItems: "center",
       height: "100%",

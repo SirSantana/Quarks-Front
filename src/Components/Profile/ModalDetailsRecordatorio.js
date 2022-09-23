@@ -6,17 +6,8 @@ import { gql, useLazyQuery } from '@apollo/client';
 import { Theme } from '../../theme';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import ModalConfirmDelete from '../../utils/ModalConfirmDelete';
+import { GET_RECORDATORIO } from '../../graphql/querys';
 
-export const GET_RECORDATORIO = gql`
-    query getOneRecordatorio($id:ID){
-        getOneRecordatorio(id:$id){
-            titulo
-            description
-            fecha
-            id
-        }
-    }
-`
 
 export default function ModalDetailsRecordatorio({id, setModalVisible}){
     const [getOne, {data, loading, error}] = useLazyQuery(GET_RECORDATORIO)

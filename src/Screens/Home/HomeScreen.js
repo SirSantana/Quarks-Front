@@ -6,23 +6,16 @@ import { View, SafeAreaView, Text, Pressable, Image, Button } from "react-native
 import useAuth from "../../hooks/useAuth";
 import { Theme } from "../../theme";
 import * as Notifications from 'expo-notifications';
+import { GET_ONE_USERS } from "../../graphql/querys";
 
-const GET_ALL_USERS = gql`
-  query getOneUser($id:ID){
-    getOneUser(id:$id){
-      name
-      email
-    }
 
-  }
-`
 
 
 export const HomeScreen = () => {
   const [token, setToken] = useState(null)
   const {user} = useAuth()
   const navigation = useNavigation()
-  const result = useQuery(GET_ALL_USERS, {variables:"630fb25c071c802670d63830"})
+  const result = useQuery(GET_ONE_USERS, {variables:"630fb25c071c802670d63830"})
   const handleContinue=()=>{
     if(token){
       console.warn('Bien!');

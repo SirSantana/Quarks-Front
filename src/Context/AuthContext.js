@@ -2,6 +2,7 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, createContext, useEffect}from 'react';
 import { client } from '../../apollo';
+import { GET_USER } from '../graphql/querys';
 
 
 export const AuthContext = createContext({
@@ -9,21 +10,7 @@ export const AuthContext = createContext({
     login:()=>{},
     logout:()=>{}
 })
-export const GET_USER = gql`
-    query getUser{
-        getUser{
-            name
-            apellido
-            email
-            vehiculos
-            avatar
-            role
-            ciudad 
-            pais
-            id
-        }
-    }
-`
+
 
 export function AuthProvider({children}){
     const [user, setUser] = useState(null)

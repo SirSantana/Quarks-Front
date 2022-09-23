@@ -6,18 +6,9 @@ import ModalCargando from "../../utils/ModalCargando";
 import { Theme } from "../../theme";
 import MesGastos from "../../Components/Gastos/MesGastos";
 import AñoGastos from "../../Components/Gastos/AñoGastos";
+import { GET_ALL_GASTOS } from "../../graphql/querys";
 
-export const GET_ALL_GASTOS = gql`
-  query getAllGastos($id:ID){
-    getAllGastos(id:$id){
-      tipo
-      dineroGastado
-      fecha
-      id
-      vehiculo
-    }
-  }
-`
+
 
 export default function GastosScreen({route}){
     const [getAll, {loading,data, error}] = useLazyQuery(GET_ALL_GASTOS)

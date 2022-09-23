@@ -5,36 +5,12 @@ import { Theme } from "../../theme";
 import { useNavigation } from "@react-navigation/native";
 import { marcasMotos } from "./marcasMotos";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { GET_VEHICLES } from "../../Screens/Car/CarScreen";
 import * as ImagePicker from 'expo-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import ModalCargando from "../../utils/ModalCargando";
-const CREATE_CAR = gql`
-mutation createCar($marca:String, $tipo:String, $referencia:String, $modelo:String, $cilindraje:String, $user:ID, $imagen:String) {
-  createCar(input: {marca:$marca, tipo:$tipo, referencia:$referencia,modelo:$modelo, cilindraje:$cilindraje, user:$user, imagen:$imagen}) {
-    tipo
-    referencia
-    modelo
-    cilindraje
-    marca
-    imagen
-    id
-  }
-}
-`
-const UPDATE_CAR = gql`
-mutation updateCar($marca:String, $tipo:String, $referencia:String, $modelo:String, $cilindraje:String, $user:ID, $imagen:String, $id:ID) {
-  updateCar(input: {marca:$marca, tipo:$tipo, referencia:$referencia,modelo:$modelo, cilindraje:$cilindraje, user:$user, imagen:$imagen, id:$id}) {
-    tipo
-    referencia
-    modelo
-    cilindraje
-    marca
-    imagen
-    id
-  }
-}
-`
+import { CREATE_CAR, UPDATE_CAR } from "../../graphql/mutations";
+import { GET_VEHICLES } from "../../graphql/querys";
+
 
 const initialForm ={
   marca:'',
@@ -49,8 +25,8 @@ const initialForm ={
   
 export default function FormCreateVehicule({ route }) {
   const [form, setForm] = useState(initialForm)
-    const [image, setImage] = useState(null);
-    const navigation = useNavigation()
+  const [image, setImage] = useState(null);
+  const navigation = useNavigation()
   const { tipo, itemData } = route.params;
   const [marca, setMarca] = useState(null)
   const { width,height } = Dimensions.get('window');
@@ -76,7 +52,6 @@ export default function FormCreateVehicule({ route }) {
       if(itemData){
         setForm({...form, id:itemData.id})
         for (let property in form) {
-     
           if(form[property].length === 0 && property !== "id"){
               delete form[property]
         }
@@ -88,49 +63,48 @@ export default function FormCreateVehicule({ route }) {
       }
   }
  
-  
+  console.log(form, initialForm);
   const handleChange=(itemMarca)=>{
     setForm({...form, marca:itemMarca})
-
-      setMarca(itemMarca)
+    setMarca(itemMarca)
   }
- 
   if(error){
     Alert.alert('ERROR', error?.message)
-
   }
+
   useLayoutEffect(()=>{
       navigation.setOptions({
         title:itemData ? 'Editar mi Vehiculo': 'Crear Vehiculo'
       })
+      setForm({...form, tipo:tipo})
   },[])
-  const renderItem=(item)=>{
-        return(
-            <Pressable onPressIn={()=>handleChange(item.marca)} style={{width:60, height:60, margin:10, backgroundColor:marca === item.marca ? '#1b333d': 'white',justifyContent:'center', alignItems:'center', borderRadius:10}}>
-        <Image style={{width:40, height:40}} source={item.src}/>
-        </Pressable>
 
-        )
-        }
+  
 
-        useEffect(()=>{
-          if(error){
-            Alert.alert('Ha ocurrido un error', error)
-          }
-        },[error])
+  useEffect(()=>{
+     if(error){
+        Alert.alert('Ha ocurrido un error', error)
+    }
+  },[error])
         
-        useEffect(()=>{
-          setForm({...form, tipo:tipo})
-
-        },[])
-        useEffect(()=>{
-          if(result?.data){
+  useEffect(()=>{
+     if(result?.data){
             navigation.navigate('Vehiculo', {item: result?.data?.updateCar})
-          }
-          if(data){
+      }
+    if(data){
             navigation.navigate('Mi Vehiculo',{data:data.createCar})
+      }
+   },[result?.data, data])
+
+    const renderItem=(item)=>{
+            return(
+                <Pressable onPressIn={()=>handleChange(item.marca)} style={{width:60, height:60, margin:10, backgroundColor:marca === item.marca ? '#1b333d': 'white',justifyContent:'center', alignItems:'center', borderRadius:10}}>
+            <Image style={{width:40, height:40}} source={item.src}/>
+            </Pressable>
+    
+            )
           }
-        },[result?.data, data])
+
   return (
     <KeyboardAwareScrollView 
     resetScrollToCoords={{ x: 0, y: 0 }}
@@ -218,9 +192,16 @@ export default function FormCreateVehicule({ route }) {
            </View>
 
            <View style={{flexDirection:'row', marginTop:20, width:'100%', justifyContent:'space-between'}}>
-            <Pressable disabled={form== initialForm ? true: false || result?.loading || loading} onPress={handleSubmit} style={[Theme.buttons.primary,{width:'100%', backgroundColor:form== initialForm ? 'gray': Theme.colors.primary}]}>
-            <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>{itemData ? 'Guardar Cambios':'Guardar Auto'}</Text>
+            {itemData?
+            <Pressable disabled={form !== initialForm ? false: true || result?.loading && true} onPress={handleSubmit} style={[Theme.buttons.primary,{width:'100%', backgroundColor:form !== initialForm ? Theme.colors.primary:'gray' }]}>
+            <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Guardar Cambios</Text>
         </Pressable>
+          :
+          <Pressable disabled={form.referencia !== initialForm.referencia && form.marca !== initialForm.marca ? false: true || loading && true} onPress={handleSubmit} style={[Theme.buttons.primary,{width:'100%', backgroundColor:form.referencia !== initialForm.referencia && form.marca !== initialForm.marca ? Theme.colors.primary:"gray" }]}>
+            <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Crear Vehiculo</Text>
+        </Pressable>
+          }
+            
            </View>
       </View>
       

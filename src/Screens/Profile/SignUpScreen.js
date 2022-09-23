@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Theme } from '../../theme'
-import {View, Text, TextInput, Pressable, Image, Alert, Modal} from 'react-native'
+import {View, Text, TextInput, Pressable, Image, Alert, Modal, Dimensions} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import * as Yup  from 'yup'
 import { useFormik } from 'formik'
@@ -10,19 +10,9 @@ import useAuth from '../../hooks/useAuth'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import ModalCargando from '../../utils/ModalCargando'
 import { client } from '../../../apollo'
+import { SIGN_UP } from '../../graphql/mutations'
 
-const SIGN_UP = gql`
-mutation signUp($email: String!, $password:String!, $name:String!, $lastName:String!, $confirmPassword:String!) {
-  signUp(input:{email: $email, password:$password, name:$name, confirmPassword:$confirmPassword, lastName:$lastName}) {
-    user {
-      email
-      name
-      id
-    }
-    token
-  }
-}
-`
+
 
 const initialForm = {
   name:'',
@@ -70,13 +60,12 @@ useEffect(()=>{
     login(data?.signUp?.user)
   }
 },[data])
+const {height, width} = Dimensions.get('window')
 
     return(
       <KeyboardAwareScrollView 
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        keyboardShouldPersistTaps= 'always'
-        style= {{ flex:1 }}>
-        <View style={Theme.containers.containerParent}>
+      contentContainerStyle={{flexGrow: 1}}>
+        <View style={[Theme.containers.containerParent]}>
           <Image style={{width:40, height:40}} source={require('../../../assets/LogoQuarks1PNG.png')}/>
           <Text style={{fontSize:30, fontWeight:"700", color:'#f50057' }}>Registrate</Text>
 

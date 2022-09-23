@@ -12,19 +12,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import ModalCargando from '../../utils/ModalCargando';
 import {useEffect, useState} from 'react'
 import { client } from '../../../apollo';
-export const SIGN_IN_MUTATION = gql`
-mutation signIn($email: String!, $password:String!) {
-    signIn(input:{email: $email, password:$password}) {
-      user {
-        email
-        id
-        name
-        role
-      }
-      token
-    }
-  }
-`  
+import { SIGN_IN_MUTATION } from '../../graphql/mutations';
+
 const initialForm = {
   email:'',
   password:''
@@ -37,6 +26,7 @@ const validationSchema ={
 export default function SignInScreen(){
   const navigation = useNavigation()
   const {login} = useAuth()
+  const [signIn, {data, error, loading}] = useMutation(SIGN_IN_MUTATION, {refetchQueries:[{query:GET_USER}]})
 
     const formik = useFormik({
         initialValues:initialForm,
@@ -47,12 +37,9 @@ export default function SignInScreen(){
       },
 
     })
-    const [signIn, {data, error, loading}] = useMutation(SIGN_IN_MUTATION, {refetchQueries:[{query:GET_USER}]})
-    useEffect(()=>{
-      if(error){
-        Alert.alert('Ha ocurrido un error')
-      }
-    },[error])
+    if(error){
+      Alert.alert('Ha ocurrido un error')
+    }
 
     useEffect(()=>{
       if(data){
@@ -63,8 +50,7 @@ export default function SignInScreen(){
     },[data])
     return(
       <ScrollView contentContainerStyle={{flexGrow: 1}}
-  keyboardShouldPersistTaps='handled'
->
+  keyboardShouldPersistTaps='handled' >
         <View style={Theme.containers.containerParent}>
           <Image style={{width:40, height:40}} source={require('../../../assets/LogoQuarks1PNG.png')}/>
           <Text style={{fontSize:30, fontWeight:"700", color:'#f50057' }}>Inicia Sesion</Text>
@@ -94,7 +80,7 @@ export default function SignInScreen(){
             onPress={formik.handleSubmit}
             disabled={loading}
             style={{width:'100%',backgroundColor:'#1b333d', height:50, borderRadius:10,justifyContent:'center', alignItems:'center'}}>
-                <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Sign In</Text>
+                <Text style={{color:'white', fontSize:18, fontWeight:"600"}}>Iniciar Sesion</Text>
             </Pressable>
             <Pressable
             disabled={loading}

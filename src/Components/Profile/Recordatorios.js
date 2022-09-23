@@ -6,17 +6,8 @@ import { gql, useQuery } from '@apollo/client'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ModalDetailsRecordatorio from './ModalDetailsRecordatorio'
 import { FontAwesome5 } from '@expo/vector-icons'; 
+import {GET_RECORDATORIOS} from '../../graphql/querys'
 
-export const GET_RECORDATORIOS =gql`
-    query getRecordatorios{
-        getRecordatorios{
-            titulo
-            description
-            fecha
-            id
-        }
-    }
-`
 export default function Recordatorios({name}){
     const [visibleCreate, setVisibleCreate] = useState(false)
     const result = useQuery(GET_RECORDATORIOS)

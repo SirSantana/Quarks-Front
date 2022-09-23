@@ -6,19 +6,9 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Fontisto } from '@expo/vector-icons';
 import { gql, useMutation, useQuery } from '@apollo/client'
 import ModalCargando from '../../utils/ModalCargando';
-import { GET_RECORDATORIO, GET_RECORDATORIOS } from './Recordatorios';
+import { CREATE_RECORDATORIO } from '../../graphql/mutations';
+import { GET_RECORDATORIOS } from '../../graphql/querys';
 
-
-const CREATE_RECORDATORIO = gql`
-    mutation createRecordatorio($titulo:String, $description:String, $fecha:Date){
-        createRecordatorio(input:{titulo:$titulo, description:$description, fecha:$fecha}){
-            titulo
-            description
-            fecha
-            id
-        }
-    }
-`
 
 const initialForm={
     titulo:"",

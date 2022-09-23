@@ -7,20 +7,9 @@ import useAuth from '../../hooks/useAuth'
 import { marcasCarros } from '../../Components/CarComponents/marcasCarros'
 import Vehiculo from '../../Components/CarComponents/Vehiculo'
 import { GET_USER } from '../../Context/AuthContext'
+import { GET_VEHICLES } from '../../graphql/querys'
 
-export const GET_VEHICLES= gql`
-  query getCars{
-    getCars{
-      tipo
-      marca
-      id
-      imagen
-      cilindraje
-      referencia
-      modelo
-    }
-  }
-`
+
 
 export const CarScreen=({route}) =>{
   
@@ -79,8 +68,8 @@ export const CarScreen=({route}) =>{
       <>
           <Image style={{width:300, height:300, marginBottom:20}} source={require('../../../assets/CarBack.png')}/>
 
-    <Text style={[Theme.fonts.titleBlue]}>Elige el tipo de Vehiculo</Text>
-    <Text style={[Theme.fonts.descriptionBlue]}>Y empieza a llevar tus gastos!</Text>
+    <Text style={[Theme.fonts.titleBlue,{width:'90%', textAlign:'center', fontSize:26}]}>Elige el tipo de Vehiculo</Text>
+    <Text style={[Theme.fonts.descriptionGray]}>Y empieza a llevar tus gastos!</Text>
 
       <View style={{  flexDirection:'row', justifyContent:'space-between', width:'60%', marginTop:20}}>
           <Pressable onPress={()=>handleCreate('Carro')} style={Theme.containers.containerBox}>

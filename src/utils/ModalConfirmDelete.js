@@ -1,23 +1,12 @@
 import { gql, useMutation } from '@apollo/client';
 import {Modal, View, Text, StyleSheet, Pressable, Image} from 'react-native'
-import { GET_RECORDATORIOS } from '../Components/Profile/Recordatorios';
-import { GET_ALL_GASTOS } from '../Screens/Car/GastosScreen';
-import { GET_GASTOS } from '../Screens/Car/VehiculeDataScreen';
 import { Theme } from '../theme';
 import ModalCargando from './ModalCargando';
 import { useEffect } from 'react';
+import { DELETE_GASTO, DELETE_RECORDATORIO } from '../graphql/mutations';
+import { GET_ALL_GASTOS, GET_GASTOS, GET_RECORDATORIOS } from '../graphql/querys';
 
-const DELETE_GASTO = gql`
-  mutation deleteGasto($id:ID!, $idVehiculo:ID!){
-    deleteGasto(id:$id, idVehiculo:$idVehiculo)
-    
-  }
-`
-const DELETE_RECORDATORIO =gql`
-  mutation deleteRecordatorio($id:ID!){
-    deleteRecordatorio(id:$id)
-  }
-`
+
 
 export default function ModalConfirmDelete({setVisibleDelete, id, idVehiculo, setModalVisible}){
   const [deleteGasto, {data, loading, error}] = useMutation(DELETE_GASTO,{

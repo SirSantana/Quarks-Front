@@ -12,18 +12,8 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { MaterialIcons } from '@expo/vector-icons';
 import { marcasMotos } from '../../Components/CarComponents/marcasMotos';
 import ModalCargando from '../../utils/ModalCargando';
+import { GET_GASTOS } from '../../graphql/querys';
 
-export const GET_GASTOS = gql`
-  query getPrevGastos($id:ID){
-    getPrevGastos(id:$id){
-      tipo
-      dineroGastado
-      fecha
-      id
-      vehiculo
-    }
-  }
-`
 
 export default function VehiculeDataScreen({route}) {
   const navigation = useNavigation()
@@ -73,7 +63,7 @@ console.log(item.id);
           
           
           <View style={{margin:20, flexDirection:'row', alignItems:'center',}}>
-          <Image  style={{height: 50, width:50, marginRight:20}} source={item.tipo === 'Carro' ?  marca?.src : marcaMoto.src}/>
+          <Image  style={{height: 50, width:50, marginRight:20}} source={item.tipo === 'Carro' ?  marca?.src : marcaMoto?.src}/>
           <View>
           <Text style={Theme.fonts.titleBlue}>{item?.marca} {item?.referencia}</Text>
           <Text style={Theme.fonts.descriptionGray}>{item?.modelo}</Text>

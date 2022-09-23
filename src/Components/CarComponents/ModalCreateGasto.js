@@ -11,35 +11,10 @@ import { Fontisto } from '@expo/vector-icons';
 import { gql, useMutation, useQuery } from "@apollo/client";
 import * as FileSystem from 'expo-file-system'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { GET_GASTOS } from '../../Screens/Car/VehiculeDataScreen';
-import { GET_ALL_GASTOS } from '../../Screens/Car/GastosScreen';
 import ModalCargando from '../../utils/ModalCargando';
+import { CREATE_GASTO, UPDATE_GASTO } from '../../graphql/mutations';
+import { GET_ALL_GASTOS, GET_GASTOS } from '../../graphql/querys';
 
-const CREATE_GASTO = gql`
-  mutation createGasto($dineroGastado:String, $tipo:String,$lugar:String, $description:String, $imagen:String, $fecha:Date, $vehiculo:ID){
-    createGasto(input:{dineroGastado:$dineroGastado,tipo:$tipo,lugar:$lugar, description:$description, imagen:$imagen, fecha:$fecha, vehiculo:$vehiculo}){
-      tipo
-      dineroGastado
-      fecha
-      id
-      lugar
-      vehiculo
-    }
-  }
-`
-const UPDATE_GASTO = gql`
-  mutation updateGasto($dineroGastado:String, $tipo:String,$lugar:String, $description:String, $imagen:String, $fecha:Date, $vehiculo:ID, $id:ID){
-    updateGasto(input:{dineroGastado:$dineroGastado,tipo:$tipo,lugar:$lugar, description:$description, imagen:$imagen, fecha:$fecha, vehiculo:$vehiculo, id:$id}){
-      tipo
-      dineroGastado
-      fecha
-      id
-      description
-      lugar
-      imagen
-    }
-  }
-`
 
 let tiposGastos = [
     {tipo:'Lavada', icon:"local-car-wash"},
@@ -157,6 +132,7 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
           setForm({...form, imagen:result.base64})
         }
       };
+      
     const handleSubmit=()=>{
       if(item){
         for (let property in form) {

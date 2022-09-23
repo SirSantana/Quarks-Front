@@ -7,20 +7,9 @@ import { gql, useMutation } from '@apollo/client';
 import { GET_USER } from '../../Context/AuthContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import ModalCargando from '../../utils/ModalCargando';
+import { EDIT_USER } from '../../graphql/mutations';
 
-const EDIT_USER = gql`
-    mutation editUser($name:String, $apellido:String, $avatar:String, $ciudad:String, $pais:String){
-        editUser(input:{name:$name, apellido:$apellido, avatar:$avatar, ciudad:$ciudad, pais:$pais}){
-                name
-                apellido
-                pais
-                avatar
-                ciudad
-                id
-                role
-        }
-    }
-`
+
 const initialForm={
     nombre:"",
     apellido:"",

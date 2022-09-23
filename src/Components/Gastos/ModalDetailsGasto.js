@@ -9,20 +9,8 @@ import { Feather } from '@expo/vector-icons';
 import ModalCreateGasto from "../CarComponents/ModalCreateGasto";
 import ModalCargando from "../../utils/ModalCargando";
 import ModalConfirmDelete from "../../utils/ModalConfirmDelete";
-export const GET_ONE_GASTO = gql`
-  query getOneGasto($id:ID){
-    getOneGasto(id:$id){
-      tipo
-      dineroGastado
-      fecha
-      id
-      imagen
-      description
-      lugar
-      vehiculo
-    }
-  }
-`
+import { GET_ONE_GASTO } from "../../graphql/querys";
+
 
 export default function ModalDetailsGasto({id, setModalVisible}){
     const [getOne, {loading, data, error}] = useLazyQuery(GET_ONE_GASTO)
