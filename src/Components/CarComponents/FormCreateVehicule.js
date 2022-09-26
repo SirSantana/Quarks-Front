@@ -155,24 +155,28 @@ export default function FormCreateVehicule({ route }) {
       
       <TextInput
             placeholder={itemData ?  itemData?.marca : tipo === 'Carro' ? 'Aveo': 'Mt-03' }
-            onChangeText={(text)=> setForm({...form, referencia:text})}
+            onChangeText={(text)=> setForm({...form, referencia:text.trim()})}
             style={Theme.input.basic}
+            maxLength='15'
+
             />
             
       <Text style={Theme.fonts.descriptionGray}>Modelo</Text>
 
             <TextInput
             placeholder={itemData&& itemData?.modelo}
-            onChangeText={(text)=> setForm({...form, modelo:text})}
+            onChangeText={(text)=> setForm({...form, modelo:text.trim()})}
+            maxLength='4'
 
             style={Theme.input.basic}
             />
       <Text style={Theme.fonts.descriptionGray}>Cilindraje</Text>
 
             <TextInput
-            onChangeText={(text)=> setForm({...form, cilindraje:text})}
+            onChangeText={(text)=> setForm({...form, cilindraje:text.trim()})}
             placeholder={itemData&& itemData?.cilindraje}
             style={Theme.input.basic}
+            maxLength='5'
             />
 
 

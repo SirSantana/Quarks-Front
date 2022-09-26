@@ -49,9 +49,9 @@ export default function ModalDetailsRecordatorio({id, setModalVisible}){
                 
 
                 {getOneRecordatorio?.description &&
-                <View style={styles.viewDetail}>
+                <View style={[styles.viewDetail,{width:'100%', alignItems:'center',justifyContent:'space-between' }]}>
                 <Text style={Theme.fonts.descriptionGray}>Descripcion</Text>
-                <Text style={Theme.fonts.descriptionBlue}> {getOneRecordatorio.description}</Text>
+                <Text style={[Theme.fonts.descriptionBlue,{width:'60%'}]}> {getOneRecordatorio.description}</Text>
                  </View>
                 }
                 

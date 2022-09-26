@@ -226,6 +226,7 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
                     mode="date"
                     onConfirm={handleConfirm}
                     onCancel={hideDatePicker}
+                    maximumDate={new Date(2022, 11, 31)}
                     /> 
             </Pressable>
 
@@ -233,7 +234,7 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
             <Text style={Theme.fonts.descriptionGray}>Dinero Gastado</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:50, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:10}}>
             <MaterialIcons name="attach-money" size={30} color="black" />
-            <TextInput keyboardType='numeric' placeholder={item?.dineroGastado} style={[Theme.fonts.descriptionGray,{width:'90%'}]} onChangeText={(text)=> setForm({...form, dineroGastado:text})} />
+            <TextInput maxLength={'9'} keyboardType='numeric' placeholder={item?.dineroGastado} style={[Theme.fonts.descriptionGray,{width:'90%'}]} onChangeText={(text)=> setForm({...form, dineroGastado:text.replace( /[.,\s]/g, '')})} />
             </Pressable>
 
                 
@@ -261,13 +262,13 @@ export default function ModalCreateGasto({ setModalVisible2, id, item}){
             <Text style={Theme.fonts.descriptionGray}>Tienda</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:50, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:10}}>
             <FontAwesome5 name="store" size={20} color="#1b333d" style={{marginLeft:5}}/>
-            <TextInput placeholder={item?.lugar} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]} onChangeText={(text)=> setForm({...form, lugar:text})} />
+            <TextInput maxLength="20" placeholder={item?.lugar} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]} onChangeText={(text)=> setForm({...form, lugar:text})} />
             </Pressable>
 
             <Text style={Theme.fonts.descriptionGray}>Descripcion</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:80, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:20}}>
             <AntDesign name="filetext1" size={24} color="#1b333d" style={{marginLeft:5}}/>
-            <TextInput placeholder={item?.description} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]} onChangeText={(text)=> setForm({...form, description:text})} />
+            <TextInput maxLength='100' placeholder={item?.description} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]} onChangeText={(text)=> setForm({...form, description:text})} />
             </Pressable>
             </>
 

@@ -54,7 +54,7 @@ export default function AllGastos({data}){
         <>
         <View style={{justifyContent:'center', alignItems:'center'}}>
 
-        <View style={{borderRadius:10,marginBottom:5, height:50, padding:5, justifyContent:'center', width:'100%'}}>
+        <View style={{borderRadius:10,marginBottom:5, height:'7%', padding:5, justifyContent:'center', width:'100%'}}>
               <View style={{justifyContent:'space-between', flexDirection:'row'}}>
               <Text style={[Theme.fonts.titleBig,{fontSize:20}]}>Gastos </Text>
               </View>
@@ -67,7 +67,7 @@ export default function AllGastos({data}){
             />
             </View>
             <FlatList
-             style={{width:'100%'}}
+             style={{width:'100%', height:'83%'}}
              renderItem={({ item })=>
              <TouchableOpacity onPress={() =>  handleDetails(item)} >
                  <Render item={item}/>

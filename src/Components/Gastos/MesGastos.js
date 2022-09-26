@@ -11,12 +11,14 @@ export default function MesGastos({data, month}){
     const [modalVisible, setModalVisible] = useState(false)
     const [idItem,setIdItem] = useState(null)
     const [collapse, setCollapse] = useState(month ? true: false)
+
     let meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
     let tipoGastos = ['Mantenimiento', 'Parqueadero', 'Tanqueada', 'Repuestos', 'Lavada']
     let mesActual;
     if(data.length >0){
        mesActual = month || new Date(data[0]?.fecha).getMonth()
     }
+    console.log('fecah',data[1]?.fecha);
     let tipos = {
         Mantenimiento:[],
         Parqueadero:[],

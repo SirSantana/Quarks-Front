@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Pressable, Image, Button, Modal} from "react-native";
+import { View, StyleSheet, Text, Pressable, Image, Button, Modal, ScrollView, ActivityIndicator} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -43,7 +43,13 @@ export default function ModalDetailsGasto({id, setModalVisible}){
       <>
         
         <Pressable onPress={()=> setModalVisible(false)}  style={styles.centeredView}>
-              <View style={styles.modalView}>
+              <ScrollView style={styles.modalView}>
+              {loading &&
+              <View style={{justifyContent:'center', alignItems:'center'}}>
+                <ActivityIndicator style={{width:80, height:80, }} color={Theme.colors.primary}/>
+
+              </View>
+                }
                {getOneGasto &&
                <>
                <View style={{width:'100%', flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
@@ -69,9 +75,9 @@ export default function ModalDetailsGasto({id, setModalVisible}){
                 </View>
 
                 {getOneGasto?.description &&
-                <View style={styles.viewDetail}>
+                <View style={[styles.viewDetail,{width:'100%', alignItems:'center',justifyContent:'space-between' }]}>
                 <Text style={Theme.fonts.descriptionGray}>Descripcion</Text>
-                <Text style={Theme.fonts.descriptionBlue}> {getOneGasto.description}</Text>
+                <Text style={[Theme.fonts.descriptionBlue,{width:'60%'}]}> {getOneGasto.description}</Text>
                  </View>
                 }
                 {getOneGasto?.lugar &&
@@ -95,7 +101,7 @@ export default function ModalDetailsGasto({id, setModalVisible}){
                </>
                }
              
-              </View>
+              </ScrollView>
 
           </Pressable>
            <Modal
@@ -143,7 +149,6 @@ const styles = StyleSheet.create({
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       backgroundColor:'white',
-
     },
     modalView2: {
    
