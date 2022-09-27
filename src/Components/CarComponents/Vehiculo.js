@@ -45,10 +45,10 @@ export default function Vehiculo({item}){
 
 
           <View style={{justifyContent:'space-between', }}>
-            <View  style={{flexDirection:'row', justifyContent:'space-between'}}>
+            {/* <View  style={{flexDirection:'row', justifyContent:'space-between'}}>
             <Text style={[Theme.fonts.descriptionBlue,{fontWeight:"600"}]}>Balance</Text>
           <Text style={[Theme.fonts.descriptionBlue,{fontWeight:"600"}]}>$ 100.000</Text>
-            </View>
+            </View> */}
           
           <View style={{backgroundColor:'#f1f1f1'}}>
             

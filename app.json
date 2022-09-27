@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Quarks",
+    "name": "Quarks - Tu Vehiculo en tu Bolsillo",
     "slug": "Quarks",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,7 +21,8 @@
       "bundleIdentifier": "com.quarks.quarks"
     },
     "android": {
-      "package": "com.quarks.quarks",
+      "package": "com.quarks.vehiculo",
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/Logo.png",
         "backgroundColor": "#FFFFFF"
@@ -30,6 +31,7 @@
         "android.permission.RECORD_AUDIO"
       ]
     },
+    
     "web": {
       "favicon": "./assets/Logo.png"
     },
@@ -40,6 +42,11 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "27fdfa4d-a22f-44c1-ab84-a7b404f7b67c"
+      }
+    }
   }
 }
