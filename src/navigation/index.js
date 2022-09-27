@@ -16,6 +16,7 @@ import AllGastos from '../Components/Gastos/AllGastos';
 import GastosScreen from '../Screens/Car/GastosScreen';
 import * as Notifications from 'expo-notifications';
 import { useEffect } from 'react';
+import ChatScreen from '../Screens/Home/ChatScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -51,6 +52,8 @@ function StackHome() {
     return (
       <Stack.Navigator >
         <Stack.Screen name="Inicio" component={HomeScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="Chat" component={ChatScreen}/>
+
       </Stack.Navigator>
     );
   }

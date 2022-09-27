@@ -76,25 +76,25 @@ export default function EditProfile({user, setVisibleEdit}){
             <Pressable style={{backgroundColor:'white', width:'100%', height:50, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:10}}>
             {/* <FontAwesome5 name="store" size={20} color="#1b333d" style={{marginLeft:5}}/> */}
             
-            <TextInput maxLength='15'  onChangeText={(text)=> setForm({...form, name:text.trim()})} placeholder={user.name} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]}  />
+            <TextInput maxLength={15}  onChangeText={(text)=> setForm({...form, name:text.trim()})} placeholder={user.name} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]}  />
             </Pressable>
 
             <Text style={[Theme.fonts.descriptionGray,{textAlign:'left'}]}>Apellido</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:50, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:10}}>
             {/* <FontAwesome5 name="store" size={20} color="#1b333d" style={{marginLeft:5}}/> */}
-            <TextInput maxLength='15' onChangeText={(text)=> setForm({...form, apellido:text.trim()})} placeholder={user.apellido} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]}  />
+            <TextInput maxLength={15} onChangeText={(text)=> setForm({...form, apellido:text.trim()})} placeholder={user.apellido} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]}  />
             </Pressable>
 
             <Text style={[Theme.fonts.descriptionGray,{textAlign:'left'}]}>Ciudad</Text>
             <Pressable style={{backgroundColor:'white', width:'100%', height:50, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:10}}>
             {/* <FontAwesome5 name="store" size={20} color="#1b333d" style={{marginLeft:5}}/> */}
-            <TextInput maxLength='15' onChangeText={(text)=> setForm({...form, ciudad:text.trim()})} placeholder={"Bogotá"} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]}  />
+            <TextInput maxLength={15} onChangeText={(text)=> setForm({...form, ciudad:text.trim()})} placeholder={"Bogotá"} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]}  />
             </Pressable>
 
             <Text style={[Theme.fonts.descriptionGray,{textAlign:'left'}]}>Pais</Text>
             <Pressable  style={{backgroundColor:'white', width:'100%', height:50, paddingHorizontal:5, alignItems:'center', flexDirection:'row', marginBottom:10}}>
             {/* <FontAwesome5 name="store" size={20} color="#1b333d" style={{marginLeft:5}}/> */}
-            <TextInput maxLength='15' onChangeText={(text)=> setForm({...form, pais:text.trim()})} placeholder={"Colombia"} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]}  />
+            <TextInput maxLength={15} onChangeText={(text)=> setForm({...form, pais:text.trim()})} placeholder={"Colombia"} multiline style={[Theme.fonts.descriptionGray,{width:'80%', marginHorizontal:10}]}  />
             </Pressable>
 
             <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>

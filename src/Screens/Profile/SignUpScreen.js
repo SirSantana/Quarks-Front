@@ -78,7 +78,7 @@ const {height, width} = Dimensions.get('window')
             placeholder='Nombre'
             style={Theme.input.basic}
             onChangeText={(text)=> formik.setFieldValue('name', text)}
-            maxLength='15'
+            maxLength={15}
 
             />
             
@@ -86,7 +86,7 @@ const {height, width} = Dimensions.get('window')
             <TextInput
           value={formik.values.lastName}
             placeholder='Apellido'
-            maxLength='15'
+            maxLength={15}
 
             style={Theme.input.basic}
             onChangeText={(text)=> formik.setFieldValue('lastName', text)}

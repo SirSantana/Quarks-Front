@@ -157,7 +157,7 @@ export default function FormCreateVehicule({ route }) {
             placeholder={itemData ?  itemData?.marca : tipo === 'Carro' ? 'Aveo': 'Mt-03' }
             onChangeText={(text)=> setForm({...form, referencia:text.trim()})}
             style={Theme.input.basic}
-            maxLength='15'
+            maxLength={15}
 
             />
             
@@ -166,7 +166,7 @@ export default function FormCreateVehicule({ route }) {
             <TextInput
             placeholder={itemData&& itemData?.modelo}
             onChangeText={(text)=> setForm({...form, modelo:text.trim()})}
-            maxLength='4'
+            maxLength={4}
 
             style={Theme.input.basic}
             />
@@ -176,7 +176,7 @@ export default function FormCreateVehicule({ route }) {
             onChangeText={(text)=> setForm({...form, cilindraje:text.trim()})}
             placeholder={itemData&& itemData?.cilindraje}
             style={Theme.input.basic}
-            maxLength='5'
+            maxLength={5}
             />
 
 
