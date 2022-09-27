@@ -52,7 +52,7 @@ function StackHome() {
     return (
       <Stack.Navigator >
         <Stack.Screen name="Inicio" component={HomeScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="Chat" component={ChatScreen}/>
+        <Stack.Screen name="Chat" component={ChatScreen} options={{tabBarVisible:false}}/>
 
       </Stack.Navigator>
     );
